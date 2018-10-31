@@ -9,9 +9,11 @@ module.exports = {
     keepalive: true
   },
   admins: {
-    admins: [10,11]
+    admins: [14,23]
   },
   messages:{
-    help: "\r\n [b]Teamspeak 3 Channel Assistant Bot - Commands:[/b] \r\n !Create   -   Initiate channel template creation \r\n !help   -   Fore more info"
+    help: "\r\n [b]Teamspeak 3 Channel Assistant Bot - Commands:[/b] \r\n !create   -   Initiate channel template creation \r\n !help   -   Fore more info",
+    unknown: "\r\n Unknown command, type [b]!help[/b] for more info",
+    forbidden: "\r\n Insufficient permissions :("
   }
 };
