@@ -1,5 +1,5 @@
 /*
-    * Teamspeak 3 NodeJS Bot for creating template channels
+    * Teamspeak 3 NodeJS® Bot for creating template channels
  *
  * Description: Provides a 'cli-like' service through Teamspeak's chat
  *              to easily create groups of channels with similar settings.
