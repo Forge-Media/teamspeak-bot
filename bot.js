@@ -14,29 +14,59 @@ const owners = config.admins.admins;
 
 // Store the bot
 let theBot;
+// Store users in session
+let currentlyCreating = {};
+// User object
+function creatingUser() {
+	this.processid = 1;
+	this.clid = false;
+	var currentDate = new Date();
+	this.date = currentDate.getTime();
+}
 
 // Creates a new Connection to a TeamSpeak Server
 let ts3 = new TeamSpeak3(config.settings);
+
+function templateChannels(invoker) {
+	invoker.message("Clan Name:");
+}
 
 ts3.on("textmessage", data => {
 	// Messgage is private only
 	if (data.targetmode == 1) {
 		// Stop the bot responding to its own replies, causing an infinite loop (0_o)
 		if (data.invoker.getCache().client_unique_identifier != theBot.client_unique_identifier) {
+			
+			// Get the invoker as an object
 			const client = data.invoker;
 			// var nick = data.invoker.getCache().client_nickname;
 			const groups = data.invoker.getCache().client_servergroups;
 			// Check invoker has permissions
-			if (owners.some(r=> groups.indexOf(r) >= 0)) {
+			if (owners.some(r => groups.indexOf(r) >= 0)) {
+				
 				//console.log(" Recieved message from: '" + nick + ": '" + data.msg + "'");
-				//client.message(" Hello");
-				const msg = data.msg.toLowerCase();
-				if (msg == "help" || msg == "!help") {
-					client.message(config.messages.help);
-				} else if (msg == "!create") {
-					client.message("Channel Creation Starting");
-				} else {
-					client.message(config.messages.unknown);
+				// Is this client already creating channels
+				if (typeof currentlyCreating[client.getCache().clid] === "undefined") {
+					
+					//client.message(" Hello");
+					const msg = data.msg.toLowerCase();
+					// Is message a command
+					if (msg.charAt(0) == "!") {
+						// Help
+						if (msg == "!help") {
+							client.message(config.messages.help);
+							// Create
+						} else if (msg == "!create") {
+							currentlyCreating[client.getCache().clid] = new creatingUser();
+							client.message("Enter Clan Name:");
+							// Unknown
+						} else {
+							client.message(config.messages.unknown);
+						}
+					}
+				// User is currently making parent channel
+				} else if (currentlyCreating[client.getCache().clid].processid == 1) {
+					let parent = data.msg;
 				}
 			} else {
 				client.message(config.messages.forbidden);
