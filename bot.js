@@ -20,9 +20,9 @@ let channels = [];
 // Store users in session
 let currentlyCreating = {};
 // User object
-function creatingUser() {
+function creatingUser(invoker) {
 	this.processid = 1;
-	this.clid = false;
+	this.client = invoker;
 	var currentDate = new Date();
 	this.date = currentDate.getTime();
 }
@@ -70,8 +70,10 @@ ts3.on("textmessage", data => {
 		} else if (msg == "!create") {
 			// Clear array for new create
 			channels = [];
-			currentlyCreating[client.getCache().clid] = new creatingUser();
-			client.message("Enter Clan Name: ([i]type '!stop' to stop creating channels![/i])");
+			// Create session and store Teamspeak-Invoker-Object in new session, used for time-out message
+			currentlyCreating[client.getCache().clid] = new creatingUser(client);
+			client.message("Enter Clan Name: (type '!stop' to stop creating channels!)");
+
 			// Unknown
 		} else {
 			client.message(config.messages.unknown);
@@ -85,38 +87,37 @@ ts3.on("textmessage", data => {
 		if (channelName[0]) {
 			// Stop creating channels
 			if (channelName[1] == "!stop") {
-				client.message("\r\n Constructing " + channels.length + " channels...");
+				client.message("Constructing " + channels.length + " channels...");
 
 				// Construct channels
 				constructChannels()
 					.then(res => {
 						// console.log(res);
 						if (res) {
-							client.message("\r\n Channels created succesffully");
+							client.message("Channels created succesffully, setting permissions...");
 						}
 						// Set channel permissions
 						setChannelPerms()
 							.then(res => {
 								if (res) {
-									client.message("\r\n Channel permissions set");
-									
-									// Maybe change this to sessionTerminate function?
-									delete currentlyCreating[client.getCache().clid];
-									client.message("\r\n [b]Session ended![/b]");
+									client.message("Channel permissions set");
+									// End session
+									terminateSession(client);
 								}
 							})
 							.catch(err => {
-								// Maybe have session terminate function and call it here (for errors)?
+								// Channel set permission error
 								console.log("CATCHED", err.message);
 								client.message(config.messages.error + err.message);
+								terminateSession(client);
 							});
 					})
 					.catch(err => {
-						// Maybe have session terminate function and call it here (for errors)?
+						// Channel creation error
 						console.log("CATCHED", err.message);
 						client.message(config.messages.error + err.message);
+						terminateSession(client);
 					});
-
 			} else {
 				// Parent channel
 				if (!Array.isArray(channels) || !channels.length) {
@@ -168,7 +169,14 @@ async function setChannelPerms() {
 	}
 	return true;
 }
+// Terminate User Session
+function terminateSession(client) {
+	// Delete user from session array
+	delete currentlyCreating[client.getCache().clid];
+	client.message(config.messages.terminate);
+}
 
+// Sanitise channel name
 function sanitation(message) {
 	if (message.length > 20) {
 		console.log("Channel name too long");
@@ -177,6 +185,28 @@ function sanitation(message) {
 		return [true, message.trim()];
 	}
 }
+
+//  Terminate users in the middle of a creation process when they have been inactive for a while.
+setInterval(function() {
+	console.log("Checking inactive session");
+	// Max user session time in millseconds
+	const maxTime = 300000;
+	const currentDate = new Date();
+	let currentTime = currentDate.getTime();
+	for (var i in currentlyCreating) {
+		if (currentlyCreating.hasOwnProperty(i)) {
+			// Terminate sessions longer than maxTime
+			if (currentTime - currentlyCreating[i].date > maxTime) {
+				// Get the Teamspeak-Invoker-Object
+				let invoker = currentlyCreating[i].client;
+				// Notify the invoker
+				invoker.message("Your session has expired.");
+				// Terminate the invoker's session
+				terminateSession(invoker);
+			}
+		}
+	}
+}, 30000);
 
 ts3.on("ready", () => {
 	// Required that we register the bot to recieve private text messages
