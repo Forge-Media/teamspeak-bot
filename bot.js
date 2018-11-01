@@ -115,12 +115,14 @@ ts3.on("textmessage", data => {
 						terminateSession(client);
 					});
 			} else {
-				// Parent channel
+				
 				if (!Array.isArray(channels) || !channels.length) {
+					// Parent channel
 					channels.push(new Channel(channelName[1], null));
 					client.message("Enter Channel 1 Name:");
-					// Child channel
+					
 				} else {
+					// Child channel
 					channels.push(new Channel(channelName[1], channels[0]));
 					client.message("Enter Channel " + channels.length + " Name:");
 				}

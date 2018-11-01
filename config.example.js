@@ -16,6 +16,7 @@ module.exports = {
     unknown: "\r\n Unknown command, type [b]!help[/b] for more info",
     sanitation: "\r\n Channel name is invalid, try again:",
     forbidden: "\r\n Insufficient permissions :(",
-    error: "\r\n [b]Caught Internal Error:[/b] "
+    error: "\r\n [b]Caught Internal Error:[/b] ",
+    terminate: "\r\n [b]Session ended![/b]"
   }
 };
