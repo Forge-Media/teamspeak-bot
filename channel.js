@@ -30,10 +30,11 @@ class Channel {
 
 		// Parent Channel Changes
 		if (parent == null) {
-			(this.properties.channel_codec_quality = 0), (this.properties.channel_flag_maxclients_unlimited = 2);
-			this.properties.channel_maxclients = 0;
+			this.properties.channel_codec_quality = 0;
 			this.properties.channel_flag_maxfamilyclients_unlimited = 2;
+			this.properties.channel_flag_maxclients_unlimited = 2;
 			this.properties.channel_maxfamilyclients = 0;
+			this.properties.channel_maxclients = 0;
 			this.permissions.i_channel_needed_delete_power = 75;
 			this.permissions.i_channel_needed_modify_power = 75;
 			this.permissions.i_channel_needed_join_power = 75;
