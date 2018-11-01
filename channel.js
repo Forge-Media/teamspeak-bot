@@ -1,11 +1,18 @@
 // Channel Template Class
 class Channel {
 	constructor(name, parent) {
+		this.cid = null;
 		this.parent = parent;
 		this.name = parent == null ? "[cspacer123] ★ " + name + " ★" : name;
-		this.cid = null;
+		this.properties = this.setProperties();
+		this.permissions = this.setPermissions();
+		if (parent == null) {
+			this.makeParent();
+		}
+	}
 
-		this.properties = {
+	setProperties() {
+		return {
 			channel_codec: 4,
 			channel_codec_quality: 10,
 			channel_flag_default: 0,
@@ -20,27 +27,27 @@ class Channel {
 			channel_topic: "",
 			cpid: 0
 		};
+	}
 
-		this.permissions = {
+	setPermissions() {
+		return {
 			i_channel_needed_modify_power: 70,
 			i_channel_needed_delete_power: 70,
 			i_channel_needed_join_power: 35,
 			i_channel_needed_permission_modify_power: 70
 		};
+	}
 
-		// Parent Channel Changes
-		if (parent == null) {
-			this.properties.channel_codec_quality = 0;
-			this.properties.channel_flag_maxfamilyclients_unlimited = 2;
-			this.properties.channel_flag_maxclients_unlimited = 2;
-			this.properties.channel_maxfamilyclients = 0;
-			this.properties.channel_maxclients = 0;
-			this.permissions.i_channel_needed_delete_power = 75;
-			this.permissions.i_channel_needed_modify_power = 75;
-			this.permissions.i_channel_needed_join_power = 75;
-			this.permissions.i_channel_needed_permission_modify_power = 75;
-		}
-		// Child Channel Changes
+	makeParent() {
+		this.properties.channel_codec_quality = 0;
+		this.properties.channel_flag_maxfamilyclients_unlimited = 2;
+		this.properties.channel_flag_maxclients_unlimited = 2;
+		this.properties.channel_maxfamilyclients = 0;
+		this.properties.channel_maxclients = 0;
+		this.permissions.i_channel_needed_delete_power = 75;
+		this.permissions.i_channel_needed_modify_power = 75;
+		this.permissions.i_channel_needed_join_power = 75;
+		this.permissions.i_channel_needed_permission_modify_power = 75;
 	}
 }
 
