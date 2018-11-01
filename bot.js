@@ -30,10 +30,6 @@ function creatingUser(invoker) {
 // Creates a new Connection to a TeamSpeak Server
 let ts3 = new TeamSpeak3(config.settings);
 
-function templateChannels(invoker) {
-	invoker.message("Clan Name:");
-}
-
 ts3.on("textmessage", data => {
 	// Messgage is private only
 	if (data.targetmode != 1) {
