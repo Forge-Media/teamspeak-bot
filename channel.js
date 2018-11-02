@@ -6,7 +6,7 @@ class Channel {
 		this.name = parent == null ? "[cspacer123] ★ " + name + " ★" : name;
 		this.properties = this.setProperties();
 		this.permissions = this.setPermissions();
-		if (parent == null) {
+		if (!parent) {
 			this.makeParent();
 		}
 	}

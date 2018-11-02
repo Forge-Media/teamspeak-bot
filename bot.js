@@ -23,7 +23,7 @@ let currentlyCreating = {};
 function creatingUser(invoker) {
 	this.processid = 1;
 	this.client = invoker;
-	var currentDate = new Date();
+	let currentDate = new Date();
 	this.date = currentDate.getTime();
 }
 
@@ -77,77 +77,78 @@ ts3.on("textmessage", data => {
 
 		// User is currently creating a channel
 	} else if (currentlyCreating[client.getCache().clid].processid == 1) {
-		// Sanitise original message and retain capitalisation
+		// Sanitise original message and retain capitalisation - returns an array[valid,message]
 		let channelName = sanitation(data.msg);
-		// Channel name is OK
-		if (channelName[0]) {
-			// Stop creating channels
-			if (channelName[1] == "!stop") {
-				client.message("Constructing " + channels.length + " channels...");
 
-				// Construct channels
-				constructChannels()
+		// Check for valid channel name
+		if (!channelName[0]) {
+			client.message(config.messages.sanitation);
+			return;
+		}
+
+		// RECURSIVE: Expect another channel unless message equals '!stop'
+		if (channelName[1] != "!stop") {
+			if (!Array.isArray(channels) || !channels.length) {
+				// Parent channel
+				channels.push(new Channel(channelName[1], null));
+				client.message("Enter Channel 1 Name:");
+			} else {
+				// Child channel
+				channels.push(new Channel(channelName[1], channels[0]));
+				client.message("Enter Channel " + channels.length + " Name:");
+			}
+			return;
+		}
+
+		client.message("Constructing " + channels.length + " channels...");
+		// Construct channels
+		constructChannels()
+			.then(res => {
+				// console.log(res);
+				if (res) {
+					client.message("Channels created succesffully, setting permissions...");
+				}
+				// Set channel permissions
+				setChannelPerms()
 					.then(res => {
 						// console.log(res);
 						if (res) {
-							client.message("Channels created succesffully, setting permissions...");
+							client.message("Channel permissions set");
+							// End session
+							terminateSession(client);
 						}
-						// Set channel permissions
-						setChannelPerms()
-							.then(res => {
-								if (res) {
-									client.message("Channel permissions set");
-									// End session
-									terminateSession(client);
-								}
-							})
-							.catch(err => {
-								// Channel set permission error
-								console.log("CATCHED", err.message);
-								client.message(config.messages.error + err.message);
-								terminateSession(client);
-							});
 					})
 					.catch(err => {
-						// Channel creation error
+						// Channel set permission error
 						console.log("CATCHED", err.message);
 						client.message(config.messages.error + err.message);
 						terminateSession(client);
 					});
-			} else {
-				
-				if (!Array.isArray(channels) || !channels.length) {
-					// Parent channel
-					channels.push(new Channel(channelName[1], null));
-					client.message("Enter Channel 1 Name:");
-					
-				} else {
-					// Child channel
-					channels.push(new Channel(channelName[1], channels[0]));
-					client.message("Enter Channel " + channels.length + " Name:");
-				}
-			}
-		} else {
-			client.message(config.messages.sanitation);
-		}
+			})
+			.catch(err => {
+				// Channel creation error
+				console.log("CATCHED", err.message);
+				client.message(config.messages.error + err.message);
+				terminateSession(client);
+			});
 	}
 });
 
 // Create Channels
 async function constructChannels() {
 	let response;
-	for (let i in channels) {
-		//channels.forEach( async c => {
+	// loop through channel array
+	for (let c of channels) {
 		// Parent Channel
-		if (i == 0) {
-			response = await ts3.channelCreate(channels[i].name, channels[i].properties);
-			channels[i].cid = response._static.cid;
+		if (!c.parent) {
+			response = await ts3.channelCreate(c.name, c.properties);
+			c.cid = response._static.cid;
 			// Child Channels
 		} else {
 			// Set channel's parent id
-			channels[i].properties.cpid = channels[i].parent.cid;
-			response = await ts3.channelCreate(channels[i].name, channels[i].properties);
-			channels[i].cid = response._static.cid;
+			c.properties.cpid = c.parent.cid;
+			response = await ts3.channelCreate(c.name, c.properties);
+			c.cid = response._static.cid;
 		}
 		// console.log(response);
 	}
@@ -158,15 +159,16 @@ async function constructChannels() {
 async function setChannelPerms() {
 	let respons;
 	// loop through channel array
-	for (let i in channels) {
-		// loop through channel[i]'s permissions
-		for (let perm in channels[i].permissions) {
+	for (let c of channels) {
+		// loop through channel's permissions object
+		for (let perm in c.permissions) {
 			// Set channel perms one-by-one
-			respons = await ts3.channelSetPerm(channels[i].cid, perm, channels[i].permissions[perm], true);
+			respons = await ts3.channelSetPerm(c.cid, perm, c.permissions[perm], true);
 		}
 	}
 	return true;
 }
+
 // Terminate User Session
 function terminateSession(client) {
 	// Delete user from session array
@@ -184,14 +186,14 @@ function sanitation(message) {
 	}
 }
 
-//  Terminate users in the middle of a creation process when they have been inactive for a while.
+// Terminate users in the middle of a creation process when they have been inactive for a while.
+// Checks for inactive users every 30 seconds
 setInterval(function() {
-	console.log("Checking inactive session");
-	// Max user session time in millseconds
-	const maxTime = 300000;
+	// Max user session time in millseconds (3min)
+	const maxTime = 180000;
 	const currentDate = new Date();
 	let currentTime = currentDate.getTime();
-	for (var i in currentlyCreating) {
+	for (let i in currentlyCreating) {
 		if (currentlyCreating.hasOwnProperty(i)) {
 			// Terminate sessions longer than maxTime
 			if (currentTime - currentlyCreating[i].date > maxTime) {
