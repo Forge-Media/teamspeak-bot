@@ -54,24 +54,23 @@ ts3.on("textmessage", data => {
 
 	// Is this client already creating channels
 	if (typeof currentlyCreating[client.getCache().clid] === "undefined") {
+		
 		// Is message a command
 		if (msg.charAt(0) != "!") {
 			return;
 		}
 
-		// Help
-		if (msg == "!help") {
+		if (msg == "!help") {												// Help
 			client.message(config.messages.help);
-			// Create
-		} else if (msg == "!create") {
+
+		} else if (msg == "!create") {							// Create 
 			// Clear array for new create
 			channels = [];
 			// Create session and store Teamspeak-Invoker-Object in new session, used for time-out message
 			currentlyCreating[client.getCache().clid] = new creatingUser(client);
 			client.message("Enter Clan Name: (type '!stop' to stop creating channels!)");
-
-			// Unknown
 		} else {
+			// Unknown
 			client.message(config.messages.unknown);
 		}
 
