@@ -14,9 +14,9 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 ----
 First make sure that you actually have [Node.js](https://nodejs.org/en/) installed on your server. Then clone this GitHub repository to your machine:
 ```sh
-$ mkdir /teamspeak-3-bot
-$ git clone https://github.com/Forge-Media/teamspeak-bot.git /teamspeak-3-bot
-$ cd /teamspeak-3-bot
+$ mkdir teamspeak-3-bot
+$ git clone https://github.com/Forge-Media/teamspeak-bot.git teamspeak-3-bot
+$ cd teamspeak-3-bot
 ```
 Install the bot's dependencies via npm, using the following command:
 ```sh
