@@ -100,28 +100,25 @@ ts3.on("textmessage", data => {
 		}
 
 		client.message("Constructing " + channels.length + " channels...");
-		// Construct channels
+
 		constructChannels()
 			.then(res => {
-				// console.log(res);
-				if (res) {
-					client.message("Channels created successfully, setting permissions...");
-				}
-				// Set permissions
+				client.message(res);
 				setChannelPerms()
 					.then(res => {
 						client.message(res);
+						// On sucess terminate the invokers session
 						terminateSession(client);
 					})
 					.catch(err => {
-						// Internal permission set error
+						// CAUGHT: Internal permission-set error
 						console.error("CATCHED", err.message);
 						client.message(config.messages.error + err.message);
 						terminateSession(client);
 					});
 			})
 			.catch(err => {
-				// Channel creation error
+				// CAUGHT: External parent or Internal Channel-creation error
 				console.error("CATCHED", err.message);
 				client.message(config.messages.error + err.message);
 				terminateSession(client);
@@ -129,29 +126,53 @@ ts3.on("textmessage", data => {
 	}
 });
 
-// Create Channels
+/**
+ * Clan Channel Constructor
+ * Will attempt to create all channels present in the channel array
+ *
+ * If parent-channel .channelCreate() fails, the function will terminate passing error in Promise
+ * If child-channel .channelCreate() fails, error is caught and next child will be attempted
+ *
+ * @returns {Promise.<object>}
+ */
 async function constructChannels() {
-	let response;
+	let result = "Channels created successfully, setting permissions...";
 	// loop through channel array
 	for (let c of channels) {
 		// Parent Channel
 		if (!c.parent) {
-			response = await ts3.channelCreate(c.name, c.properties);
-			c.cid = response._static.cid;
+			let parent = await ts3.channelCreate(c.name, c.properties);
+			c.cid = parent._static.cid;
 			// Child Channels
 		} else {
 			// Set channel's parent id
 			c.properties.cpid = c.parent.cid;
-			response = await ts3.channelCreate(c.name, c.properties);
-			c.cid = response._static.cid;
+			await ts3
+				.channelCreate(c.name, c.properties)
+				.then(response => {
+					// Store created channels ID for permissions
+					c.cid = response._static.cid;
+				})
+				.catch(err => {
+					// CAUGHT: External error
+					result = config.messages.extError + err.message;
+					console.error("CATCHED", err.message, "ON", c.name);
+				});
 		}
-		// console.log(response);
 	}
-	return true;
+	return result;
 }
 
-// Set Channel Permissions
+/**
+ * Set Channel Permission
+ * Will attempt to set permissions for all channels present in the channel array
+ *
+ * If .channelSetPerm() fails, error is caught and next permission will be attempted
+ *
+ * @returns {Promise.<object>}
+ */
 async function setChannelPerms() {
+	// Result assumes success
 	let result = "Permissions set successfully";
 	// loop through channel array
 	for (let c of channels) {
@@ -159,6 +180,7 @@ async function setChannelPerms() {
 		for (let perm in c.permissions) {
 			// Set channel perms one-by-one
 			await ts3.channelSetPerm(c.cid, perm, c.permissions[perm], true).catch(err => {
+				// CAUGHT: External error
 				result = config.messages.extError + err.message;
 				console.error("CATCHED", err.message, "ON", c.name);
 			});
