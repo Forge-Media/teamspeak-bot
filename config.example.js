@@ -13,10 +13,11 @@ module.exports = {
   },
   messages:{
     help: "\r\n [b]Teamspeak 3 Channel Assistant Bot - Commands:[/b] \r\n !create   -   Initiate channel template creation \r\n !help   -   Fore more info",
-    unknown: "\r\n Unknown command, type [b]!help[/b] for more info",
+    unknown: "Unknown command, type [b]!help[/b] for more info",
     sanitation: "[b]Channel name is invalid, try again:[/b]",
-    forbidden: "\r\n Insufficient permissions :(",
-    error: "\r\n [b]Caught Internal Error:[/b] ",
+    forbidden: "Insufficient permissions :(",
+    error: "[b]Caught Internal Error:[/b] ",
+    extError: "[b]Caught External Error:[/b] ",
     terminate: "[b]Session ended![/b]"
   }
 };
