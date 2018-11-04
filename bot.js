@@ -54,21 +54,21 @@ ts3.on("textmessage", data => {
 
 	// Is this client already creating channels
 	if (typeof currentlyCreating[client.getCache().clid] === "undefined") {
-		
 		// Is message a command
 		if (msg.charAt(0) != "!") {
 			return;
 		}
 
-		if (msg == "!help") {												// Help
+		if (msg == "!help") {
+			// Help
 			client.message(config.messages.help);
-
-		} else if (msg == "!create") {							// Create 
+		} else if (msg == "!create") {
+			// Create
 			// Clear array for new create
 			channels = [];
 			// Create session and store Teamspeak-Invoker-Object in new session, used for time-out message
 			currentlyCreating[client.getCache().clid] = new creatingUser(client);
-			client.message("Enter Clan Name: (type '!stop' to stop creating channels!)");
+			client.message("Enter Clan Name: (Type '!stop' at any point to create the channels!)");
 		} else {
 			// Unknown
 			client.message(config.messages.unknown);
@@ -105,28 +105,24 @@ ts3.on("textmessage", data => {
 			.then(res => {
 				// console.log(res);
 				if (res) {
-					client.message("Channels created succesffully, setting permissions...");
+					client.message("Channels created successfully, setting permissions...");
 				}
-				// Set channel permissions
+				// Set permissions
 				setChannelPerms()
 					.then(res => {
-						// console.log(res);
-						if (res) {
-							client.message("Channel permissions set");
-							// End session
-							terminateSession(client);
-						}
+						client.message(res);
+						terminateSession(client);
 					})
 					.catch(err => {
-						// Channel set permission error
-						console.log("CATCHED", err.message);
+						// Internal permission set error
+						console.error("CATCHED", err.message);
 						client.message(config.messages.error + err.message);
 						terminateSession(client);
 					});
 			})
 			.catch(err => {
 				// Channel creation error
-				console.log("CATCHED", err.message);
+				console.error("CATCHED", err.message);
 				client.message(config.messages.error + err.message);
 				terminateSession(client);
 			});
@@ -156,16 +152,19 @@ async function constructChannels() {
 
 // Set Channel Permissions
 async function setChannelPerms() {
-	let respons;
+	let result = "Permissions set successfully";
 	// loop through channel array
 	for (let c of channels) {
 		// loop through channel's permissions object
 		for (let perm in c.permissions) {
 			// Set channel perms one-by-one
-			respons = await ts3.channelSetPerm(c.cid, perm, c.permissions[perm], true);
+			await ts3.channelSetPerm(c.cid, perm, c.permissions[perm], true).catch(err => {
+				result = config.messages.extError + err.message;
+				console.error("CATCHED", err.message, "ON", c.name);
+			});
 		}
 	}
-	return true;
+	return result;
 }
 
 // Terminate User Session
@@ -178,7 +177,7 @@ function terminateSession(client) {
 // Sanitise channel name
 function sanitation(message) {
 	if (message.length > 20) {
-		console.log("Channel name too long");
+		console.info("Channel name too long");
 		return [false];
 	} else {
 		return [true, message.trim()];
@@ -215,21 +214,22 @@ ts3.on("ready", () => {
 		ts3.whoami()
 	])
 		.then(res => {
-			console.log("Subscribed to Private Text Messages");
+			console.info("Subscribed to Private Text Messages");
 			theBot = res[1];
+			//test();
 		})
 		.catch(e => {
-			console.log("CATCHED", e.message);
+			console.error("CATCHED", e.message);
 		});
 });
 
 //Error event gets fired when an Error during connecting or an Error during Processing of an Event happens
 ts3.on("error", e => {
-	console.log("Error", e.message);
+	console.error("Error", e.message);
 });
 
 //Close event gets fired when the Connection to the TeamSpeak Server has been closed
 //the e variable is not always set¬
 ts3.on("close", e => {
-	console.log("Connection has been closed!", e);
+	console.error("Connection has been closed!", e);
 });
