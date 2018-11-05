@@ -5,11 +5,16 @@ module.exports = {
     serverport: 9987,
     username: "username",
     password: "password",
-    nickname: "NodeJS Bot",
+    nickname: "Jarvis Dev Bot",
     keepalive: true
   },
   admins: {
-    admins: [14,23]
+    admins: []
+  },
+  plugins: {
+    createClan: true,
+    help: false,
+    cid: true
   },
   messages:{
     help: "\r\n [b]Teamspeak 3 Channel Assistant Bot - Commands:[/b] \r\n !create   -   Initiate channel template creation \r\n !help   -   Fore more info",
