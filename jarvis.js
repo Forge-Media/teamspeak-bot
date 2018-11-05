@@ -18,7 +18,6 @@ class Jarvis {
 		this.cid = cid;
 		this.name = config.settings.nickname;
 		this.config = config;
-		console.log(this.config.settings);
 		this.onMessage = function() {};
 		this.connect();
 	}

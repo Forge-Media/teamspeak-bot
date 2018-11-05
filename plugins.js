@@ -22,12 +22,33 @@ exports.init = function(config_plugins) {
 	return exports;
 };
 
-exports.onMessage = function(msg, _jarvis) {
+exports.onMessage = function(msg, jarvis) {
 	plugins.forEach(function(item) {
 		if (typeof item.onMessage == "function") {
-			item.onMessage(msg, _jarvis);
+			item.onMessage(msg, jarvis);
 		}
 	});
+};
+
+exports.getHelpMessage = function() {
+	let response = "";
+
+	[].concat
+		.apply(
+			[],
+			plugins
+				.filter(function(item) {
+					return typeof item.help != "undefined";
+				})
+				.map(function(item) {
+					return item.help;
+				})
+		)
+		.map(function(item) {
+			response += "[I]" + item[0] + "[/I]: " + item[1] + "\n";
+		});
+
+	return response;
 };
 
 exports.run = function(bot) {

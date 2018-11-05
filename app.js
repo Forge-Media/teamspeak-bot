@@ -6,6 +6,12 @@ let jarvis = new Jarvis(config, 292);
 console.info("Loading plugins...");
 let plugins = require("./plugins").init(config.plugins);
 
+let generic_helpers = {
+	help_message: function() {
+		return plugins.getHelpMessage();
+	}
+};
+
 jarvis.messageHandler(function(data) {
 	if (data.targetmode != 1) {
 		return;
@@ -16,20 +22,18 @@ jarvis.messageHandler(function(data) {
 		new function() {
 			this.client = data.invoker;
 			this.groups = data.invoker.getCache().client_servergroups;
-			this.privateResponse = (msg) => {
-				jarvis.sendMessage(this.client.getCache().clid, msg, 1);
-			};
-			this.createChannel = (name, properties) => {
+			this.channelCreate = (name, properties) => {
 				return jarvis.cl.channelCreate(name, properties);
 			};
-			this.setChannelPerm = (cid, perm, value, type) => {
-				return jarvis.cl.channelSetPerm(cid, perm, value, type);
+			this.channelSetPerms = (cid, permissions) => {
+				return jarvis.cl.channelSetPerms(cid, permissions);
 			};
+			this.help_message = generic_helpers.help_message;
 		}()
 	);
 });
 
 // Run plugins ervery 30 seconds
 setInterval(function() {
-	plugins.run(jarvis);
+	plugins.run();
 }, 30000);

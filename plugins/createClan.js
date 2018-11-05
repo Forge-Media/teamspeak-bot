@@ -1,6 +1,10 @@
 const Channel = require("./contrib/channel");
 const config = require("../config");
 
+exports.help = [
+	["!createClan", "Initiate channel template creation for a clan"]
+]
+
 // Array of groups who can use this function
 const owners = [14, 23];
 
@@ -18,16 +22,16 @@ function creatingUser(invoker) {
 	this.date = currentDate.getTime();
 }
 
-exports.onMessage = function(msg, _jarvis) {
+exports.onMessage = function(msg, jarvis) {
 	const message = msg.toLowerCase();
-	let client = _jarvis.client;
-
+	let client = jarvis.client;
+	
 	// Is this client already creating channels
 	if (typeof currentlyCreating[client.getCache().clid] === "undefined") {
-		if (message == "!create") {
+		if (message == "!createclan") {
 			// Check invoker has permissions
-			if (!owners.some(r => _jarvis.groups.indexOf(r) >= 0)) {
-				_jarvis.privateResponse(config.messages.forbidden);
+			if (!owners.some(r => jarvis.groups.indexOf(r) >= 0)) {
+				client.message(config.messages.forbidden);
 				return;
 			}
 			// Create
@@ -35,7 +39,7 @@ exports.onMessage = function(msg, _jarvis) {
 			channels = [];
 			// Create session and store Teamspeak-Invoker-Object in new session, used for time-out message
 			currentlyCreating[client.getCache().clid] = new creatingUser(client);
-			_jarvis.privateResponse("Enter Clan Name: (Type '!stop' at any point to create the channels!)");
+			client.message("Enter Clan Name: (Type '!stop' at any point to create the channels!)");
 		}
 	} else if (currentlyCreating[client.getCache().clid].processid == 1) {
 		// Sanitise original message and retain capitalisation - returns an array[valid,message]
@@ -43,12 +47,12 @@ exports.onMessage = function(msg, _jarvis) {
 
 		// Check for valid channel name
 		if (!channelName[0]) {
-			_jarvis.privateResponse(config.messages.sanitation);
+			client.message(config.messages.sanitation);
 			return;
 		}
 		// Check if another command was entered, rather than channel name
 		if (channelName[1].charAt(0) == "!" && !(channelName[1].toLowerCase() == "!stop")) {
-			_jarvis.privateResponse("[b]Command Entered[/b] - Please re-enter Channel " + channels.length + " Name:");
+			client.message("[b]Command Entered[/b] - Please re-enter Channel " + channels.length + " Name:");
 			return;
 		}
 
@@ -57,38 +61,38 @@ exports.onMessage = function(msg, _jarvis) {
 			if (!Array.isArray(channels) || !channels.length) {
 				// Parent channel
 				channels.push(new Channel(channelName[1], null));
-				_jarvis.privateResponse("Enter Channel 1 Name:");
+				client.message("Enter Channel 1 Name:");
 			} else {
 				// Child channel
 				channels.push(new Channel(channelName[1], channels[0]));
-				_jarvis.privateResponse("Enter Channel " + channels.length + " Name:");
+				client.message("Enter Channel " + channels.length + " Name:");
 			}
 			return;
 		}
 
-		_jarvis.privateResponse("Constructing " + channels.length + " channels...");
+		client.message("Constructing " + channels.length + " channels...");
 
-		constructChannels(_jarvis)
+		constructChannels(jarvis)
 			.then(res => {
-				_jarvis.privateResponse(res);
-				setChannelPerms(_jarvis)
+				client.message(res);
+				setChannelPermissions(jarvis)
 					.then(res => {
-						_jarvis.privateResponse(res);
+						client.message(res);
 						// On sucess terminate the invokers session
-						terminateSession(_jarvis, client);
+						terminateSession(client);
 					})
 					.catch(err => {
 						// CAUGHT: Internal permission-set error
 						console.error("CATCHED", err.message);
-						_jarvis.privateResponse(config.messages.error + err.message);
-						terminateSession(_jarvis, client);
+						client.message(config.messages.error + err.message);
+						terminateSession(client);
 					});
 			})
 			.catch(err => {
-				// CAUGHT: External parent or Internal Channel-creation error
+				// CAUGHT: Internal error or parent channel failed
 				console.error("CATCHED", err.message);
-				_jarvis.privateResponse(config.messages.error + err.message);
-				terminateSession(_jarvis, client);
+				client.message(config.messages.error + err.message);
+				terminateSession(client);
 			});
 	}
 };
@@ -102,21 +106,21 @@ exports.onMessage = function(msg, _jarvis) {
  *
  * @returns {Promise.<object>}
  */
-async function constructChannels(_jarvis) {
+async function constructChannels(jarvis) {
 	let result = "Channels created successfully, setting permissions...";
 	// loop through channel array
 	for (let c of channels) {
 		// Parent Channel
 		if (!c.parent) {
-			await _jarvis.createChannel(c.name, c.properties).then(response => {
+			await jarvis.channelCreate(c.name, c.properties).then(response => {
 				c.cid = response._static.cid;
 			});
 			// Child Channels
 		} else {
 			// Set channel's parent id
 			c.properties.cpid = c.parent.cid;
-			await _jarvis
-				.createChannel(c.name, c.properties)
+			await jarvis
+				.channelCreate(c.name, c.properties)
 				.then(response => {
 					// Store created channels ID for permissions
 					c.cid = response._static.cid;
@@ -138,21 +142,28 @@ async function constructChannels(_jarvis) {
  * If .channelSetPerm() fails, error is caught and next permission will be attempted
  *
  * @returns {Promise.<object>}
+ *
+ * TeamSpeak3.channelSetPerms(5, [{ permsid: "i_channel_needed_modify_power", permvalue: 75 }])
  */
-async function setChannelPerms(_jarvis) {
+async function setChannelPermissions(jarvis) {
 	// Result assumes success
 	let result = "Permissions set successfully";
 	// loop through channel array
 	for (let c of channels) {
 		// loop through channel's permissions object
+		let permissions = [];
 		for (let perm in c.permissions) {
-			// Set channel perms one-by-one
-			await _jarvis.setChannelPerm(c.cid, perm, c.permissions[perm], true).catch(err => {
-				// CAUGHT: External error
-				result = config.messages.extError + err.message;
-				console.error("CATCHED", err.message, "ON", c.name);
+			permissions.push({
+				permsid: perm,
+				permvalue: c.permissions[perm]
 			});
 		}
+		// Set channel perms one-by-one
+		await jarvis.channelSetPerms(c.cid, permissions).catch(err => {
+			// CAUGHT: External error
+			result = config.messages.extError + err.message;
+			console.error("CATCHED", err.message, "ON", c.name);
+		});
 	}
 	return result;
 }
@@ -168,15 +179,13 @@ function sanitation(message) {
 }
 
 // Terminate User Session
-function terminateSession(_jarvis, client) {
-	// Delete user from session array
+function terminateSession(client) {
 	delete currentlyCreating[client.getCache().clid];
-	_jarvis.privateResponse(config.messages.terminate);
+	client.message(config.messages.terminate);
 }
 
 // Terminate users in the middle of a creation process when they have been inactive for a while.
-// Checks for inactive users every 30 seconds
-exports.run = function(bot) {
+exports.run = function() {
 	// Max user session time in millseconds (3min)
 	const maxTime = 180000;
 	const currentDate = new Date();
@@ -188,7 +197,7 @@ exports.run = function(bot) {
 				// Get the Teamspeak-Invoker-Object
 				let invoker = currentlyCreating[i].client;
 				// Notify the invoker
-				bot.sendMessage(invoker.getCache().clid, "[b]Your session has expired.[/b]", 1);
+				invoker.message("[b]Your session has expired.[/b]");
 				// Terminate the invoker's session
 				delete currentlyCreating[invoker.getCache().clid];
 			}
