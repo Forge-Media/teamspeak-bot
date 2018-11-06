@@ -45,6 +45,7 @@ Make sure you've renamed __config.example.js__ to __config.js__ before starting 
 ### Setup Plugins
 ----
 __createClan__
+
 Please make sure to add Server Group ID numbers which allow users to use the `!createClan` command, in __createClan.js__ 
 ```javascript
 const owners = [14, 23];
@@ -58,12 +59,12 @@ this.name = parent == null ? "[cspacer123] ★ " + name + " ★" : name;
 ```
 Other channel _properties_ and _permissions_ can be configured in this file!
 
-### Development
+## Development
 ----
 Please do report the bugs you encounter!
 If you'd like to improve this project feel free to start a pull request, it will be reviewed as fast as possible.
 
-### Support
+## Support
 ----
 You can get support by either going to the [issues page](https://github.com/Forge-Media/teamspeak-bot/issues).
 
