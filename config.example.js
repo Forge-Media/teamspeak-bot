@@ -5,24 +5,21 @@ module.exports = {
     serverport: 9987,
     username: "username",
     password: "password",
-    nickname: "Jarvis Dev Bot",
+    nickname: "Jarvis Bot",
     keepalive: true
-  },
-  admins: {
-    admins: []
   },
   plugins: {
     createClan: true,
-    help: false,
+    help: true,
     cid: true
   },
   messages:{
-    help: "\r\n [b]Teamspeak 3 Channel Assistant Bot - Commands:[/b] \r\n !create   -   Initiate channel template creation \r\n !help   -   Fore more info",
     unknown: "Unknown command, type [b]!help[/b] for more info",
-    sanitation: "[b]Channel name is invalid, try again:[/b]",
-    forbidden: "Insufficient permissions :(",
-    error: "[b]Caught Internal Error:[/b] ",
-    extError: "[b]Caught External Error:[/b] ",
-    terminate: "[b]Session ended![/b]"
+    sanitation: "[b]Invalid entry, try again:[/b]",
+    forbidden: "[b]Insufficient permissions[/b] :(",
+    internal: "[b]Caught Internal Error:[/b] ",
+    external: "[b]Caught External Error:[/b] ",
+    terminate: "[b]Session ended![/b]",
+    expired: "[b]Session expired![/b]"
   }
 };
