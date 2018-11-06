@@ -8,12 +8,6 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/bot.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "Jarvis Debug",
             "program": "${workspaceFolder}/app.js"
         }
