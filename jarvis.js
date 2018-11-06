@@ -4,10 +4,18 @@ const TeamSpeak3 = require("ts3-nodejs-library");
  * Represents a Jarvis Bot Instance
  * @version 1.0
  * @type {Class}
- * @param {object}  config    - Config object passed from a configuration file
- * @param {integer} cid       - The Bots Default Channel passed as a ChannelID number
+ * @param {object} config - Config object passed from a configuration file
+ * @param {number} cid - The Bot's Default Channel passed as a ChannelID number
+ * @property {TeamSpeak3 Class} cl - Stores an instance of the TeamSpeak Query Class
+ * @property {object} whoami - Contains usefull information about the Bot's connection
+ * @property {boolean} enabled - If the bot is enabled (not in use currently)
+ * @property {boolean} restarted - If the bot is has bot been restarted (not in use currently)
+ * @property {boolean} ready - If the bot is ready to be used
+ * @property {number} cid - The Bot's Default Channel
+ * @property {String} name - The Bot's Name
+ * @property {object} config - Config object
+ * @property {function} onMessage - Callback function
  */
-
 class Jarvis {
 	constructor(config, cid) {
 		this.cl = null;
@@ -23,59 +31,39 @@ class Jarvis {
 	}
 
 	/**
-	 * Jarvis Bot generic message handler
-	 * This function requires a callback-function which will be used when the bot recieves a message
+	 * Jarvis generic message handler
+	 * This function requires a callback-function which will be used when Jarvis recieves a message
 	 * @version 1.0
-	 * @param {function}	callback    - Callback-function
+	 * @memberof Jarvis
+	 * @param {function} callback - Callback-function
 	 */
 	messageHandler(callback) {
 		this.onMessage = callback;
 	}
 
-	channelSetMultiPerm(cid) {
-		/*
-		let properties = { cid };
-		console.log("channeladdperm", properties);
-		this.send("channeladdperm", properties);
-		*/
-	}
-
-	sendMessage(clid, msg, scope) {
-		this.cl.sendTextMessage(clid, scope, msg).catch(err => {
-			console.error("CATCHED", err.message);
-		});
-	}
-
-	send(cmd, options) {
-		console.log(cmd, options);
-		if (this.ready && this.cl) {
-			this.cl.execute(cmd, options).catch(err => {
-				console.error("CATCHED", err.message);
-			});
-		}
-	}
-
+	/**
+	 * Disconnects Jarvis from a Teamspeak 3 server
+	 * @version 1.0
+	 * @memberof Jarvis
+	 */
 	close() {
 		this.enabled = false;
-		if (ctx.cl) {
-			ctx.cl.close();
+		if (this.cl) {
+			this.cl.close();
 		}
 	}
 
 	/**
-	 * Connects to a Teamspeak 3 server
+	 * Connects Jarvis to a Teamspeak 3 server
 	 * @version 1.0
+	 * @memberof Jarvis
 	 */
 	connect() {
 		this.cl = new TeamSpeak3(this.config.settings);
 
 		this.cl.on("ready", () => {
-			// Required that we register the bot to recieve private text messages
-			Promise.all([
-				// ts3.registerEvent("textchannel"),
-				this.cl.registerEvent("textprivate"),
-				this.cl.whoami()
-			])
+			// Register Jarivs to the following events
+			Promise.all([this.cl.registerEvent("textprivate"), this.cl.whoami()])
 				.then(res => {
 					console.info(this.name, "Subscribed to Private Text Messages");
 					this.whoami = res[1];
@@ -89,6 +77,7 @@ class Jarvis {
 					console.error("CATCHED", e.message);
 				});
 		});
+
 		this.cl.on("textmessage", data => {
 			// Stop the bot responding to its own replies, causing an infinite loop (0_o)
 			if (this.enabled && this.whoami.client_unique_identifier != data.invoker.getCache().client_unique_identifier) {
@@ -96,14 +85,14 @@ class Jarvis {
 			}
 		});
 
-		//Error event gets fired when an Error during connecting or an Error during Processing of an Event happens
+		// Error event gets fired when an Error during connecting or an Error during Processing of an Event happens
 		this.cl.on("error", e => {
 			console.error("Jarvis Error", e.message);
 			this.close();
 		});
 
-		//Close event gets fired when the Connection to the TeamSpeak Server has been closed
-		//the e variable is not always set¬
+		// Close event gets fired when the Connection to the TeamSpeak Server has been closed
+		// The e variable is not always set
 		this.cl.on("close", e => {
 			this.close();
 			console.error("Jarvis Connection has been closed!", e);

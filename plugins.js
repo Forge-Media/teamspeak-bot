@@ -18,8 +18,15 @@ exports.init = function(config_plugins) {
 			}
 		}
 	}
-
 	return exports;
+};
+
+exports.startPlugins = function(helpers) {
+	plugins.forEach(function(item) {
+		if (typeof item.run == "function") {
+			item.run(helpers);
+		}
+	});
 };
 
 exports.onMessage = function(msg, jarvis) {
@@ -31,7 +38,7 @@ exports.onMessage = function(msg, jarvis) {
 };
 
 exports.getHelpMessage = function() {
-	let response = "";
+	let response = "[b]Jarvis Assistant Bot - Commands:[/b] \n";
 
 	[].concat
 		.apply(
@@ -45,16 +52,8 @@ exports.getHelpMessage = function() {
 				})
 		)
 		.map(function(item) {
-			response += "[I]" + item[0] + "[/I]: " + item[1] + "\n";
+			response += "[b]" + item[0] + "[/b]  -  " + item[1] + "\n";
 		});
 
 	return response;
-};
-
-exports.run = function(bot) {
-	plugins.forEach(function(item) {
-		if (typeof item.run == "function") {
-			item.run(bot);
-		}
-	});
 };

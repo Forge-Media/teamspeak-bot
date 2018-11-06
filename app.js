@@ -6,17 +6,21 @@ let jarvis = new Jarvis(config, 292);
 console.info("Loading plugins...");
 let plugins = require("./plugins").init(config.plugins);
 
+
+// Object containing essential functions and messages which plugins can access
 let generic_helpers = {
 	help_message: function() {
 		return plugins.getHelpMessage();
-	}
+	},
+	error_message: config.messages
 };
+
+plugins.startPlugins(generic_helpers);
 
 jarvis.messageHandler(function(data) {
 	if (data.targetmode != 1) {
 		return;
 	}
-
 	plugins.onMessage(
 		String(data.msg),
 		new function() {
@@ -28,12 +32,8 @@ jarvis.messageHandler(function(data) {
 			this.channelSetPerms = (cid, permissions) => {
 				return jarvis.cl.channelSetPerms(cid, permissions);
 			};
+			this.error_message = generic_helpers.error_message;
 			this.help_message = generic_helpers.help_message;
 		}()
 	);
 });
-
-// Run plugins ervery 30 seconds
-setInterval(function() {
-	plugins.run();
-}, 30000);

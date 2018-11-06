@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.1",
     "ts3-nodejs-library": "^1.11.1"
   },
   "devDependencies": {
