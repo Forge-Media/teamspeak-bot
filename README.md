@@ -50,7 +50,7 @@ Please make sure to add Server Group ID numbers which allow users to use the `!c
 ```javascript
 const owners = [14, 23];
 ```
-----
+
 __createClan Channel Template__
 
 Only edit this file __plugins/contrib/channel.js__ if you need to make changes to the channel-template the bot uses when creating channels. One such change may be the naming-scheme used for the parent channel, by changing: `"[cspacer123] ★ " + name + " ★"`
