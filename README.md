@@ -21,7 +21,7 @@ Install the bot's dependencies via npm, using the following command:
 ```sh
 $ npm install
 ```
-After you have installed all the required dependencies via *npm install* it is **required to edit:
+After you have installed all the required dependencies via `npm install` it is required to edit:
 - __config.js__
 - Any __/plugins/PluginName.js__ files which have config settings. 
 
