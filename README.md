@@ -21,9 +21,13 @@ Install the bot's dependencies via npm, using the following command:
 ```sh
 $ npm install
 ```
-After you have installed all the required dependencies via *npm install* it is **required to edit the config.js and any /plugins/PluginName.js** files which have config settings accordingly. More documentation on that down below.
+After you have installed all the required dependencies via *npm install* it is **required to edit:
+- __config.js__
+- Any __/plugins/PluginName.js__ files which have config settings. 
 
-### Run the bot
+More documentation on that down below!
+
+### Run Jarvis
 ----
 #### Standard method
 After having successfully edited the config the following command will launch the bot:
@@ -33,7 +37,7 @@ $ npm run jarvis
 #### PM2 method
 We recommend using [PM2](https://github.com/Unitech/pm2) to run the bot, PM2 is an excellent Production Runtime and Process Manager for Node.js applications. It allows you to keep applications alive forever, and more!
 
-#### Edit config.js
+### Edit config.js
 ----
 __Jarvis Configuration__
 
@@ -41,15 +45,15 @@ Make sure you've renamed __config.example.js__ to __config.js__ before starting 
 
 ### Setup Plugins
 ----
-__Plugin Admin Groups__
+__createClan__
 Please make sure to add Server Group ID numbers which allow users to use the `!createClan` command, in __createClan.js__ 
 ```javascript
 const owners = [14, 23];
 ```
 ----
-__Channel Templating__
+__createClan Channel Template__
 
-Only edit this if you need to make changes to the channel-template the bot uses when creating channels. One such change may be the naming-scheme used for the parent channel, by changing: `"[cspacer123] ★ " + name + " ★"`
+Only edit this file __plugins/contrib/channel.js__ if you need to make changes to the channel-template the bot uses when creating channels. One such change may be the naming-scheme used for the parent channel, by changing: `"[cspacer123] ★ " + name + " ★"`
 ```javascript
 this.name = parent == null ? "[cspacer123] ★ " + name + " ★" : name;
 ```
