@@ -37,9 +37,8 @@ $ npm run jarvis
 #### PM2 method
 We recommend using [PM2](https://github.com/Unitech/pm2) to run the bot, PM2 is an excellent Production Runtime and Process Manager for Node.js applications. It allows you to keep applications alive forever, and more!
 
-### Edit config.js
+### Jarvis Configuration
 ----
-__Jarvis Configuration__
 
 Make sure you've renamed __config.example.js__ to __config.js__ before starting the bot, followed by adding your server query connection details, so that it can connect to your Teamspeak 3 server. 
 
