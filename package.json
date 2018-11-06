@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "jarvis": "node jarvis.js",
-    "start": "node bot.js",
-    "dev": "nodemon bot.js"
+    "jarvis": "node app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
