@@ -3,7 +3,7 @@
 # Jarvis Teamspeak-3 Bot
 This project was made possible by [TS3-NodeJS-Library](https://github.com/Multivit4min/TS3-NodeJS-Library), special thanks to [Multivit4min](https://github.com/Multivit4min/)!
 ### Current Plugin Commands
-----
+
 ```
 !createClan - Simplified mass-channel creation for a clan-channels, sets the permissions and properties of each channel it creates
 !cid - Plugin used to return a message containing the 'cid' of the channel the client is in
@@ -50,7 +50,7 @@ Please make sure to add Server Group ID numbers which allow users to use the `!c
 ```javascript
 const owners = [14, 23];
 ```
-
+----
 __createClan Channel Template__
 
 Only edit this file __plugins/contrib/channel.js__ if you need to make changes to the channel-template the bot uses when creating channels. One such change may be the naming-scheme used for the parent channel, by changing: `"[cspacer123] ★ " + name + " ★"`
@@ -59,12 +59,13 @@ this.name = parent == null ? "[cspacer123] ★ " + name + " ★" : name;
 ```
 Other channel _properties_ and _permissions_ can be configured in this file!
 
-## Development
+
+### Development
 ----
 Please do report the bugs you encounter!
 If you'd like to improve this project feel free to start a pull request, it will be reviewed as fast as possible.
 
-## Support
+### Support
 ----
 You can get support by either going to the [issues page](https://github.com/Forge-Media/teamspeak-bot/issues).
 
