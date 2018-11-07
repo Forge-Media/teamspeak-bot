@@ -1,21 +1,29 @@
 {
-  "name": "teamspeak-bot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "jarvis": "node app.js",
-    "start": "node app.js",
-    "dev": "nodemon app.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "async": "^2.6.1",
-    "ts3-nodejs-library": "^1.11.1"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.5"
-  }
+	"name": "jarvis-teamspeak-bot",
+	"version": "0.1.1",
+	"description": "Jarvis is an extensible Teamspeak 3 bot written in Javascript. Can be extended by building your own plugins!",
+	"main": "app.js",
+	"scripts": {
+		"jarvis": "node app.js",
+		"start": "node app.js",
+		"dev": "nodemon app.js"
+	},
+	"keywords": [
+		"teamspeak",
+		"ts3",
+    "bot",
+    "modular",
+    "plugins",
+    "ssh",
+    "raw"
+	],
+	"author": "Jeremy Paton",
+	"license": "MIT",
+	"dependencies": {
+		"async": "^2.6.1",
+		"ts3-nodejs-library": "^1.11.1"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.5"
+	}
 }

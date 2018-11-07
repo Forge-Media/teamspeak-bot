@@ -16,7 +16,7 @@ exports.help = [["!cid", "Get Channel ID of your current channel"]];
  * @param	{String} jarvis - Middleware Function: Provides access to certain Jarvis functions.
  */
 exports.onMessage = function(msg, jarvis) {
-	const client = jarvis.client;
+	const client = jarvis.invoker;
 	const command = msg.toLowerCase();
 
 	if (command == "!cid") {

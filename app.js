@@ -6,7 +6,6 @@ let jarvis = new Jarvis(config, 292);
 console.info("Loading plugins...");
 let plugins = require("./plugins").init(config.plugins);
 
-
 // Object containing essential functions and messages which plugins can access
 let generic_helpers = {
 	help_message: function() {
@@ -24,14 +23,9 @@ jarvis.messageHandler(function(data) {
 	plugins.onMessage(
 		String(data.msg),
 		new function() {
-			this.client = data.invoker;
+			this.ts = jarvis.ts;
+			this.invoker = data.invoker;
 			this.groups = data.invoker.getCache().client_servergroups;
-			this.channelCreate = (name, properties) => {
-				return jarvis.cl.channelCreate(name, properties);
-			};
-			this.channelSetPerms = (cid, permissions) => {
-				return jarvis.cl.channelSetPerms(cid, permissions);
-			};
 			this.error_message = generic_helpers.error_message;
 			this.help_message = generic_helpers.help_message;
 		}()
