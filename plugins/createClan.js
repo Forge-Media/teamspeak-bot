@@ -100,6 +100,13 @@ exports.onMessage = function(msg, jarvis) {
 				currentlyCreating[clid].channels.push(new Channel(channelName[1], currentlyCreating[clid].channels[0]));
 				client.message("Enter Channel " + currentlyCreating[clid].channels.length + " Name:");
 			}
+			// Return here insures plugin will request another channel when msg != stop
+			return;
+		}
+
+		// Before trying to create channels check that there are channels to create
+		if (!Array.isArray(currentlyCreating[clid].channels) || !currentlyCreating[clid].channels.length) {
+			terminateSession(client, jarvis);
 			return;
 		}
 
@@ -113,8 +120,6 @@ exports.onMessage = function(msg, jarvis) {
 						client.message(res);
 						client.message("[b]Create Clan Group?[/b] (default = No) [!y/!n]");
 						currentlyCreating[clid].processid = 2;
-						// On sucess terminate the invokers session
-						// terminateSession(client, jarvis);
 					})
 					.catch(err => {
 						// CAUGHT: Internal permission-set error
@@ -142,7 +147,6 @@ exports.onMessage = function(msg, jarvis) {
 
 		// Clan group creation
 	} else if (currentlyCreating[clid].processid == 3) {
-		console.log(msg.length);
 		if (msg.length > 5 || msg.length < 2) {
 			client.message(jarvis.error_message.sanitation);
 			return;
