@@ -1,1365 +1,1589 @@
 <!doctype html>
 <html>
-
 <head>
   <meta charset='utf-8' />
-  <title>teamspeak-bot 1.0.0 | Documentation</title>
+  <title>jarvis-teamspeak-bot 0.1.1 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
   <link href='assets/github.css' type='text/css' rel='stylesheet' />
   <link href='assets/split.css' type='text/css' rel='stylesheet' />
+  <meta name='description' content='Jarvis is an extensible Teamspeak 3 bot written in Javascript. Can be extended by building your own plugins!'>
 </head>
-
 <body class='documentation m0'>
-  <div class='flex'>
-    <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
-      <div class='py1 px2'>
-        <h3 class='mb0 no-anchor'>teamspeak-bot</h3>
-        <div class='mb1'><code>1.0.0</code></div>
-        <input placeholder='Filter' id='filter-input' class='col12 block input' type='text' />
-        <div id='toc'>
-          <ul class='list-reset h5 py1-ul'>
-
-
-            <li><a href='#jarvis' class=" toggle-sibling">
-                Jarvis
-                <span class='icon'>▸</span>
-              </a>
-
-              <div class='toggle-target display-none'>
-
-                <ul class='list-reset py1-ul pl1'>
-                  <li class='h5'><span>Static members</span></li>
-
-                  <li><a href='#jarvismessagehandler' class='regular pre-open'>
-                      .messageHandler
-                    </a></li>
-
-                  <li><a href='#jarvisclose' class='regular pre-open'>
-                      .close
-                    </a></li>
-
-                  <li><a href='#jarvisconnect' class='regular pre-open'>
-                      .connect
-                    </a></li>
-
-                </ul>
-
-
-
-
-              </div>
-
-            </li>
-
-
-            <li><a href='#plugin-cid' class=" toggle-sibling">
-                Plugin-cid
-                <span class='icon'>▸</span>
-              </a>
-
-              <div class='toggle-target display-none'>
-
-                <ul class='list-reset py1-ul pl1'>
-                  <li class='h5'><span>Static members</span></li>
-
-                  <li><a href='#plugin-cidonmessage' class='regular pre-open'>
-                      .onMessage
-                    </a></li>
-
-                </ul>
-
-
-
-
-              </div>
-
-            </li>
-
-
-            <li><a href='#plugin-createclan' class=" toggle-sibling">
-                Plugin-createClan
-                <span class='icon'>▸</span>
-              </a>
-
-              <div class='toggle-target display-none'>
-
-                <ul class='list-reset py1-ul pl1'>
-                  <li class='h5'><span>Static members</span></li>
-
-                  <li><a href='#plugin-createclanowners' class='regular pre-open'>
-                      .owners
-                    </a></li>
-
-                  <li><a href='#plugin-createclancreatinguser' class='regular pre-open'>
-                      .creatingUser
-                    </a></li>
-
-                  <li><a href='#plugin-createclanonmessage' class='regular pre-open'>
-                      .onMessage
-                    </a></li>
-
-                  <li><a href='#plugin-createclanconstructchannels' class='regular pre-open'>
-                      .constructChannels
-                    </a></li>
-
-                  <li><a href='#plugin-createclansetchannelpermissions' class='regular pre-open'>
-                      .setChannelPermissions
-                    </a></li>
-
-                  <li><a href='#plugin-createclansanitation' class='regular pre-open'>
-                      .sanitation
-                    </a></li>
-
-                  <li><a href='#plugin-createclanterminatesession' class='regular pre-open'>
-                      .terminateSession
-                    </a></li>
-
-                  <li><a href='#plugin-createclanrun' class='regular pre-open'>
-                      .run
-                    </a></li>
-
-                </ul>
-
-
-
-
-              </div>
-
-            </li>
-
-
-            <li><a href='#plugin-help' class=" toggle-sibling">
-                Plugin-help
-                <span class='icon'>▸</span>
-              </a>
-
-              <div class='toggle-target display-none'>
-
-                <ul class='list-reset py1-ul pl1'>
-                  <li class='h5'><span>Static members</span></li>
-
-                  <li><a href='#plugin-helponmessage' class='regular pre-open'>
-                      .onMessage
-                    </a></li>
-
-                </ul>
-
-
-
-
-              </div>
-
-            </li>
-
-          </ul>
-        </div>
-        <div class='mt1 h6 quiet'>
-          <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>jarvis-teamspeak-bot</h3>
+          <div class='mb1'><code>0.1.1</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#jarvis'
+                  class=" toggle-sibling">
+                  Jarvis
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#jarvismessagehandler'
+                        class='regular pre-open'>
+                        .messageHandler
+                      </a></li>
+                    
+                      <li><a
+                        href='#jarvisclose'
+                        class='regular pre-open'>
+                        .close
+                      </a></li>
+                    
+                      <li><a
+                        href='#jarvisconnect'
+                        class='regular pre-open'>
+                        .connect
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#plugin-cid'
+                  class=" toggle-sibling">
+                  Plugin-cid
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#plugin-cidonmessage'
+                        class='regular pre-open'>
+                        .onMessage
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#plugin-createclan'
+                  class=" toggle-sibling">
+                  Plugin-createClan
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#plugin-createclanconfig'
+                        class='regular pre-open'>
+                        .config
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclancreatinguser'
+                        class='regular pre-open'>
+                        .creatingUser
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclanonmessage'
+                        class='regular pre-open'>
+                        .onMessage
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclanconstructchannels'
+                        class='regular pre-open'>
+                        .constructChannels
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclansetchannelpermissions'
+                        class='regular pre-open'>
+                        .setChannelPermissions
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclanconstructgroup'
+                        class='regular pre-open'>
+                        .constructGroup
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclangetgroupsortid'
+                        class='regular pre-open'>
+                        .getGroupSortID
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclansanitation'
+                        class='regular pre-open'>
+                        .sanitation
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclanterminatesession'
+                        class='regular pre-open'>
+                        .terminateSession
+                      </a></li>
+                    
+                      <li><a
+                        href='#plugin-createclanrun'
+                        class='regular pre-open'>
+                        .run
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#plugin-help'
+                  class=" toggle-sibling">
+                  Plugin-help
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#plugin-helponmessage'
+                        class='regular pre-open'>
+                        .onMessage
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div id='split-right' class='relative overflow-auto height-viewport-100'>
-
-
-      <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-        <div class='clearfix'>
-
-          <h3 class='fl m0' id='jarvis'>
-            Jarvis
-          </h3>
-
-
-        </div>
-
-
-        <p>Represents a Jarvis Bot Instance</p>
-
-
-
-        <div class='pre p1 fill-light mt0'>new Jarvis(config: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>,
-          cid: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
-
-
-        <p>
-          Type:
-          Class
-        </p>
-
-
-
-
-        <div>Version: 1.0</div>
-
-
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Parameters</div>
-        <div class='prose'>
-
-          <div class='space-bottom0'>
-            <div>
-              <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-              Config object passed from a configuration file
-
-            </div>
-
-          </div>
-
-          <div class='space-bottom0'>
-            <div>
-              <span class='code bold'>cid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-              The Bot's Default Channel passed as a ChannelID number
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Properties</div>
-        <div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>whoami</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-            : Contains usefull information about the Bot's connection
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>enabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-            : If the bot is enabled (not in use currently)
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>restarted</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-            : If the bot is has bot been restarted (not in use currently)
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>ready</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-            : If the bot is ready to be used
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>cid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-            : The Bot's Default Channel
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-            : The Bot's Name
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-            : Config object
-
-
-          </div>
-
-          <div class='space-bottom0'>
-            <span class='code bold'>onMessage</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
-            : Callback function
-
-
-          </div>
-
-        </div>
-
-
-
-
-
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Static Members</div>
-        <div class="clearfix">
-
-          <div class='border-bottom' id='jarvismessagehandler'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>messageHandler(callback)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Jarvis generic message handler
-                  This function requires a callback-function which will be used when Jarvis recieves a message</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>messageHandler(callback: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>callback</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
-                      Callback-function
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='jarvisclose'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>close()</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Disconnects Jarvis from a Teamspeak 3 server</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>close()</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='jarvisconnect'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>connect()</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Connects Jarvis to a Teamspeak 3 server</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>connect()</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-        </div>
-
-
-
-
-
-
-      </section>
-
-
-
-      <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-        <div class='clearfix'>
-
-          <h3 class='fl m0' id='plugin-cid'>
-            Plugin-cid
-          </h3>
-
-
-        </div>
-
-
-        <p>Plugin used to return a message containing the 'cid' of the channel the invoker is in</p>
-
-
-
-        <div class='pre p1 fill-light mt0'>Plugin-cid</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Example</div>
-
-
-        <pre class='p1 overflow-auto round fill-light'>!cid</pre>
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Static Members</div>
-        <div class="clearfix">
-
-          <div class='border-bottom' id='plugin-cidonmessage'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>onMessage(msg, jarvis)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>This function is called whenever Jarvis recieves a private message,
-                  Returns a message containing the 'cid' of the channel the invoker is in</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>onMessage(msg: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>,
-                  jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Message string sent to Jarvis
-
-                    </div>
-
-                  </div>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Middleware Function: Provides access to certain Jarvis functions.
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-        </div>
-
-
-
-
-
-
-      </section>
-
-
-
-      <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-        <div class='clearfix'>
-
-          <h3 class='fl m0' id='plugin-createclan'>
-            Plugin-createClan
-          </h3>
-
-
-        </div>
-
-
-        <p>Plugin used to create a group of channels for a clan and sets the permissions and properties of each channel</p>
-
-
-
-        <div class='pre p1 fill-light mt0'>Plugin-createClan</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Example</div>
-
-
-        <pre class='p1 overflow-auto round fill-light'>!createClan</pre>
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Static Members</div>
-        <div class="clearfix">
-
-          <div class='border-bottom' id='plugin-createclanowners'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>owners</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>List of admin Group IDs who can use this plugin,
-                  will be moved to a config file at a later time</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>owners</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Example</div>
-
-
-                <pre class='p1 overflow-auto round fill-light'>owners = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>];</pre>
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclancreatinguser'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>creatingUser(client)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Represents a user object which is making channels</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>creatingUser(client: class)</div>
-
-
-                <p>
-                  Type:
-                  Class
-                </p>
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>client</span> <code class='quiet'>(class)</code>
-                      The Client which sent a textmessage
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Properties</div>
-                <div>
-
-                  <div class='space-bottom0'>
-                    <span class='code bold'>processid</span> <code class='quiet'>(integer)</code>
-                    : Keeps track of stage at which user is at in clan channel creation
-
-
-                  </div>
-
-                  <div class='space-bottom0'>
-                    <span class='code bold'>client</span> <code class='quiet'>(class)</code>
-                    : The Client which sent a textmessage
-
-
-                  </div>
-
-                  <div class='space-bottom0'>
-                    <span class='code bold'>jarvis</span> <code class='quiet'>(integer)</code>
-                    : Numeric value corresponding to when the user's session started
-
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclanonmessage'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>onMessage(msg, jarvis)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>This function is called whenever Jarvis recieves a private message
-                  Will create a group of channels for a clan and sets the permissions and properties of each channel</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>onMessage(msg: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>,
-                  jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Message string sent to Jarvis
-
-                    </div>
-
-                  </div>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Middleware Function: Provides access to certain Jarvis functions.
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclanconstructchannels'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>constructChannels(jarvis)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Will attempt to create all channels present in the channel array</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>constructChannels(jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>):
-                  <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a
-                    href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></div>
-
-
-
-
-
-                <div>Version: 1.0
-                  If parent-channel &#39;channelCreate()&#39; fails, the function will terminate passing error in
-                  Promise
-                  If child-channel &#39;channelCreate()&#39; fails, error is caught and next child will be attempted</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
-                      Middleware Function: Provides access to Jarvis functions.
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Returns</div>
-                <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></code>:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclansetchannelpermissions'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>setChannelPermissions(jarvis)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Will attempt to set permissions for all channels present in 'channels' array
-                  If 'channelSetPerm()' fails, error is caught and next permission will be attempted</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>setChannelPermissions(jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>):
-                  <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a
-                    href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
-                      Middleware Function: Provides access to Jarvis functions.
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Returns</div>
-                <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></code>:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclansanitation'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>sanitation(message)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Checks for names which are too long and removes trailing or preceding spaces</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>sanitation(message: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>):
-                  <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>message</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Any string
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Returns</div>
-                <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code>:
-                A clean channel name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclanterminatesession'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>terminateSession(client)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Terminates user from currentlyCreating array, ending session</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>terminateSession(client: class)</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>client</span> <code class='quiet'>(class)</code>
-                      The Client which sent a textmessage
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-          <div class='border-bottom' id='plugin-createclanrun'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>run(helpers)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>Active Worker: Which terminates users during creation process, if they've been inactive for a while.</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>run(helpers: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>helpers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-                      Generic helper object for error messages
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-        </div>
-
-
-
-
-
-
-      </section>
-
-
-
-      <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-        <div class='clearfix'>
-
-          <h3 class='fl m0' id='plugin-help'>
-            Plugin-help
-          </h3>
-
-
-        </div>
-
-
-        <p>Plugin used to return a message containing the 'cid' of the channel the invoker is in</p>
-
-
-
-        <div class='pre p1 fill-light mt0'>Plugin-help</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Example</div>
-
-
-        <pre class='p1 overflow-auto round fill-light'>!help</pre>
-
-
-
-
-        <div class='py1 quiet mt1 prose-big'>Static Members</div>
-        <div class="clearfix">
-
-          <div class='border-bottom' id='plugin-helponmessage'>
-            <div class="clearfix small pointer toggle-sibling">
-              <div class="py1 contain">
-                <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-                <span class='code strong strong truncate'>onMessage(msg, jarvis)</span>
-              </div>
-            </div>
-            <div class="clearfix display-none toggle-target">
-              <section class='p2 mb2 clearfix bg-white minishadow'>
-
-
-
-                <p>This function is called whenever Jarvis recieves a private message
-                  Returns a message containing the all available help commands, given by each plugin</p>
-
-
-
-                <div class='pre p1 fill-light mt0'>onMessage(msg: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>,
-                  jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
-
-
-
-
-
-                <div>Version: 1.0</div>
-
-
-
-
-
-
-                <div class='py1 quiet mt1 prose-big'>Parameters</div>
-                <div class='prose'>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Message string sent to Jarvis
-
-                    </div>
-
-                  </div>
-
-                  <div class='space-bottom0'>
-                    <div>
-                      <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-                      Middleware Function: Provides access to certain Jarvis functions.
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </section>
-
-            </div>
-          </div>
-
-        </div>
-
-
-
-
-
-
-      </section>
-
-
-    </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='jarvis'>
+      Jarvis
+    </h3>
+    
+    
   </div>
+  
+
+  <p>Represents a Jarvis Bot Instance</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>new Jarvis(config: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, cid: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+   
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
+    </p>
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Config object passed from a configuration file
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The Bot's Default Channel passed as a ChannelID number
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>whoami</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : Contains usefull information about the Bot's connection
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>enabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : If the bot is enabled (not in use currently)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>restarted</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : If the bot is has bot been restarted (not in use currently)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>ready</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : If the bot is ready to be used
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>cid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : The Bot's Default Channel
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+          : The Bot's Name
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : Config object
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>onMessage</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+          : Callback function
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='jarvismessagehandler'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>messageHandler(callback)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Jarvis generic message handler
+This function requires a callback-function which will be used when Jarvis recieves a message</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>messageHandler(callback: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>callback</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    Callback-function
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='jarvisclose'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>close()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Disconnects Jarvis from a Teamspeak 3 server</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>close()</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='jarvisconnect'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>connect()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Connects Jarvis to a Teamspeak 3 server</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>connect()</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='plugin-cid'>
+      Plugin-cid
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Plugin used to return a message containing the 'cid' of the channel the invoker is in</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>Plugin-cid</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>!cid</pre>
+    
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='plugin-cidonmessage'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>onMessage(msg, jarvis)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>This function is called whenever Jarvis recieves a private message,
+Returns a message containing the 'cid' of the channel the invoker is in</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>onMessage(msg: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Message string sent to Jarvis
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Middleware Function: Provides access to certain Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='plugin-createclan'>
+      Plugin-createClan
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Plugin used to create a group of channels for a clan and sets the permissions and properties of each channel</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>Plugin-createClan</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>!createClan</pre>
+    
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='plugin-createclanconfig'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>config</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Plugin configuration settings, please change to match your server</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>config</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>owners</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+          : The IDs of ServerGroups which can use this plugin
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>ssgid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : The source ServerGroup ID (template group you need to setup in Teamspeak)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>sortID_start</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Value used to calculate the Clan's ServerGroup's 'i_group_sort_id' for alphabetical sorting.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>sortID_start</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Value used for increment of 'i_group_sort_id' E.g. 0-9 = +901s, a = 1000s, b = 1100s, c = 1200, etc
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclancreatinguser'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>creatingUser(client)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Represents a user object which is making channels</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>creatingUser(client: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+   
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
+    </p>
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>client</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    The Client which sent a textmessage
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>processid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Keeps track of stage at which user is at in clan channel creation
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>client</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : The Client which sent a textmessage
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Numeric value corresponding to when the user's session started
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclanonmessage'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>onMessage(msg, jarvis)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>This function is called whenever Jarvis recieves a private message
+Will create a group of channels for a clan and sets the permissions and properties of each channel</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>onMessage(msg: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Message string sent to Jarvis
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Middleware Function: Provides access to certain Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclanconstructchannels'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>constructChannels(jarvis)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Will attempt to create all channels present in the channel array</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>constructChannels(jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></div>
+   
+  
+  
+
+  
+  <div>Version: 1.0
+If parent-channel &#39;channelCreate()&#39; fails, the function will terminate passing error in Promise
+If child-channel &#39;channelCreate()&#39; fails, error is caught and next child will be attempted</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
+	    Middleware Function: Provides access to Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclansetchannelpermissions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>setChannelPermissions(jarvis)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Will attempt to set permissions for all channels present in 'channels' array
+If 'channelSetPerm()' fails, error is caught and next permission will be attempted</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>setChannelPermissions(jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
+	    Middleware Function: Provides access to Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclanconstructgroup'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>constructGroup(jarvis, client, tag)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Will attempt to create a clan ServerGroup and add a sortID propery permission</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>constructGroup(jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>, client: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, tag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
+	    Middleware Function: Provides access to Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>client</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    The Client which sent a textmessage
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    String value containing a clan's tag name, e.g 'EPIC'
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclangetgroupsortid'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getGroupSortID(tag)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Calculates and returns ServerGroup's 'i_group_sort_id' value for alphabetical sorting.
+Increments sortid based on clan tag, E.g. 0-9 = +901s, a = 1000s, b = 1100s, c = 1200, etc</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getGroupSortID(tag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    String value containing a clan's tag name, e.g 'EPIC'
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Numerical value used for 'i_group_sort_id' (e.g 'EPIC' => 'E' => 5 * 100 => 901 + 500 => 1401)
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclansanitation'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>sanitation(message)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Checks for names which are too long and removes trailing or preceding spaces</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>sanitation(message: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Any string
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code>:
+        A clean channel name
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclanterminatesession'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>terminateSession(client, jarvis)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Terminates user from currentlyCreating array, ending session</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>terminateSession(client: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>client</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    The Client which sent a textmessage
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
+	    Middleware Function: Provides access to Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='plugin-createclanrun'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>run(helpers)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Active Worker: Which terminates users during creation process, if they've been inactive for a while.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>run(helpers: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>helpers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Generic helper object for error messages
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='plugin-help'>
+      Plugin-help
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Plugin used to return a message containing the 'cid' of the channel the invoker is in</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>Plugin-help</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>!help</pre>
+    
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='plugin-helponmessage'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>onMessage(msg, jarvis)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>This function is called whenever Jarvis recieves a private message
+Returns a message containing the all available help commands, given by each plugin</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>onMessage(msg: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, jarvis: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
+   
+  
+  
+
+  
+  <div>Version: 1.0</div>
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Message string sent to Jarvis
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>jarvis</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Middleware Function: Provides access to certain Jarvis functions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+      </div>
+    </div>
   <script src='assets/anchor.js'></script>
   <script src='assets/split.js'></script>
   <script src='assets/site.js'></script>
 </body>
-
 </html>

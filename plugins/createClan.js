@@ -11,6 +11,7 @@ exports.help = [["!createClan", "Initiate channel template creation for a clan"]
 
 /**
  * Plugin configuration settings, please change to match your server
+ * @version 1.0
  * @property {array} owners - The IDs of ServerGroups which can use this plugin
  * @property {number} ssgid - The source ServerGroup ID (template group you need to setup in Teamspeak)
  * @property {number} sortID_start - Value used to calculate the Clan's ServerGroup's 'i_group_sort_id' for alphabetical sorting.
@@ -32,10 +33,10 @@ let currentlyCreating = {};
  *
  * @version 1.0
  * @memberof Plugin-createClan
- * @type {Class}
- * @param {class} client - The Client which sent a textmessage
+ * @type {object}
+ * @param {object} client - The Client which sent a textmessage
  * @property {number} processid - Keeps track of stage at which user is at in clan channel creation
- * @property {class} client - The Client which sent a textmessage
+ * @property {object} client - The Client which sent a textmessage
  * @property {number} jarvis - Numeric value corresponding to when the user's session started
  */
 function creatingUser(client) {
@@ -135,41 +136,23 @@ exports.onMessage = function(msg, jarvis) {
 				terminateSession(client, jarvis);
 			});
 	} else if (currentlyCreating[clid].processid == 2) {
-		if (message != "!y") {
+		if (message.slice(0, 2) != "!y") {
 			terminateSession(client, jarvis);
 			return;
 		}
 
-		// CLAN GROUP CREATOR
 		// Set client's session to clan group creation stage
 		currentlyCreating[clid].processid = 3;
 		client.message("Enter Clan Tag: (Between 2 & 4 characters!)");
-
-		// Clan group creation
 	} else if (currentlyCreating[clid].processid == 3) {
-		if (msg.length > 5 || msg.length < 2) {
+		// Check tag is correct length
+		
+		if (msg.length > 4 || msg.length < 2) {
 			client.message(jarvis.error_message.sanitation);
 			return;
 		}
-		let clan_tag = msg.toUpperCase();
-		jarvis.ts
-			.serverGroupCopy(config.ssgid, 0, 1, clan_tag)
-			.then(res => {
-				let sort_id = getGroupSortID(clan_tag);
-				jarvis.ts.serverGroupAddPerm(res.sgid, "i_group_sort_id", sort_id, true, 0, 0);
-			})
-			.then(() => {
-				client.message("Clan group: " + clan_tag + " added successfully");
-				terminateSession(client, jarvis);
-			})
-			.catch(err => {
-				if (err.message != "database duplicate entry") {
-					client.message(jarvis.error_message.external + err.message);
-					console.error("CATCHED", err.message);
-					terminateSession(client, jarvis);
-				}
-				client.message("[b]" + clan_tag + " already exists! Try another tag:[/b]");
-			});
+		// Clan group creation
+		constructGroup(jarvis, client, msg);
 	}
 };
 
@@ -250,6 +233,37 @@ async function setChannelPermissions(jarvis) {
 }
 
 /**
+ * Will attempt to create a clan ServerGroup and add a sortID propery permission
+ *
+ * @version 1.0
+ * @memberof Plugin-createClan
+ * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
+ * @param	{object} client - The Client which sent a textmessage
+ * @param	{String} tag - String value containing a clan's tag name, e.g 'EPIC'
+ */
+function constructGroup(jarvis, client, tag) {
+	let clan_tag = tag.toUpperCase();
+	jarvis.ts
+		.serverGroupCopy(config.ssgid, 0, 1, clan_tag)
+		.then(res => {
+			let sort_id = getGroupSortID(clan_tag);
+			jarvis.ts.serverGroupAddPerm(res.sgid, "i_group_sort_id", sort_id, true, 0, 0);
+		})
+		.then(() => {
+			client.message("Clan group: " + clan_tag + " added successfully");
+			terminateSession(client, jarvis);
+		})
+		.catch(err => {
+			if (err.message != "database duplicate entry") {
+				client.message(jarvis.error_message.external + err.message);
+				console.error("CATCHED", err.message);
+				terminateSession(client, jarvis);
+			}
+			client.message("[b]" + clan_tag + " already exists! Try another tag:[/b]");
+		});
+}
+
+/**
  * Calculates and returns ServerGroup's 'i_group_sort_id' value for alphabetical sorting.
  * Increments sortid based on clan tag, E.g. 0-9 = +901s, a = 1000s, b = 1100s, c = 1200, etc
  *
@@ -288,7 +302,7 @@ function sanitation(message) {
  *
  * @version 1.0
  * @memberof Plugin-createClan
- * @param	{class} client - The Client which sent a textmessage
+ * @param	{object} client - The Client which sent a textmessage
  * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
  */
 function terminateSession(client, jarvis) {

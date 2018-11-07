@@ -3,7 +3,7 @@ const TeamSpeak3 = require("ts3-nodejs-library");
 /**
  * Represents a Jarvis Bot Instance
  * @version 1.0
- * @type {Class}
+ * @type {object}
  * @param {object} config - Config object passed from a configuration file
  * @param {number} cid - The Bot's Default Channel passed as a ChannelID number
  * @property {TeamSpeak3 Class} ts - Stores an instance of the TeamSpeak Query Class
