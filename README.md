@@ -5,7 +5,7 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 ### Current Plugin Commands
 
 ```
-!createClan - Simplified mass-channel creation for a clan-channels, sets the permissions and properties of each channel it creates
+!createClan - Simplified mass-channel creation of Clan-Channels, sets permissions and properties of each channel and can creates a Clan-Group from template group.
 !cid - Plugin used to return a message containing the 'cid' of the channel the client is in
 !help - Get help and command list
 ```
@@ -23,7 +23,7 @@ $ npm install
 ```
 After you have installed all the required dependencies via `npm install` it is required to edit:
 - __config.js__
-- Any __/plugins/PluginName.js__ files which have config settings. 
+- __/plugins/PluginName.js__ config settings 
 
 More documentation on that down below!
 
@@ -36,6 +36,9 @@ $ npm run jarvis
 ```
 #### PM2 method
 We recommend using [PM2](https://github.com/Unitech/pm2) to run the bot, PM2 is an excellent Production Runtime and Process Manager for Node.js applications. It allows you to keep applications alive forever, and more!
+```sh
+$ pm2 start app.js --name Jarvis
+```
 
 ### Jarvis Configuration
 ----
@@ -46,9 +49,14 @@ Make sure you've renamed __config.example.js__ to __config.js__ before starting 
 ----
 __createClan__
 
-Please make sure to add Server Group ID numbers which allow users to use the `!createClan` command, in __createClan.js__ 
+Please make edit the following properties in __createClan.js__ to match your Teamspeak 3 setup:
 ```javascript
-const owners = [14, 23];
+const config = {
+	owners: [14, 23], // Server group IDs allowed to use this plugin
+	ssgid: 118, // Source ServerGroup ID for Clan-Group (requires: a template group setup in Teamspeak)
+	sortID_start: 901, // Start value used to calculate clan ServerGroup 'i_group_sort_id' property
+	sortID_inc: 100 // Increment value used for each letter of alphabet 'i_group_sort_id' property
+};
 ```
 ----
 __createClan Channel Template__
