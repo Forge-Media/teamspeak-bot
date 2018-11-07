@@ -75,7 +75,7 @@ If you'd like to improve this project feel free to start a pull request, it will
 
 ### Support
 ----
-You can get support by either going to the [issues page](https://github.com/Forge-Media/teamspeak-bot/issues).
+You can get support by either going to the [issues page](https://github.com/Forge-Media/teamspeak-bot/issues) or taking a look at the Jarvis documentation which explains how the bot's code works: [Jarvis Documentation](https://forge-media.github.io/teamspeak-bot/)
 
 
 ### By Jeremy Paton & Marc Berman
