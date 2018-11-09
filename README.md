@@ -6,7 +6,7 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 
 ```
 !createClan - Simplified mass-channel creation of Clan-Channels, sets permissions and properties of each channel and can creates a Clan-Group from template group.
-!joinMe - Plugin used to ask a target user if they want to join the invoker user's channel, usefull if target lacks permissions
+!joinMe <userName>", "Requests another user to join your channel. Jarvis moves them if they accept. _Permissions independent!_
 !cid - Plugin used to return a message containing the 'cid' of the channel the client is in
 !help - Get help and command list
 ```
