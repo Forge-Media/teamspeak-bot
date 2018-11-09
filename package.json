@@ -1,6 +1,6 @@
 {
 	"name": "jarvis-teamspeak-bot",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Jarvis is an extensible Teamspeak 3 bot written in Javascript. Can be extended by building your own plugins!",
 	"main": "app.js",
 	"scripts": {
