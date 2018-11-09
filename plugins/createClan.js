@@ -37,7 +37,7 @@ let currentlyCreating = {};
  * @param {object} client - The Client which sent a textmessage
  * @property {number} processid - Keeps track of stage at which user is at in clan channel creation
  * @property {object} client - The Client which sent a textmessage
- * @property {number} jarvis - Numeric value corresponding to when the user's session started
+ * @property {number} date - Numeric value corresponding to when the user's session started
  */
 function creatingUser(client) {
 	this.processid = 1;

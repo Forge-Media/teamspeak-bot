@@ -8,14 +8,32 @@ const async = require("async");
 
 exports.help = [["!joinMe <userName> <userName2>...", "Requests another user to join your channel. Jarvis moves them if they accept."]];
 
+/**
+ * Plugin configuration settings, please change to match your server
+ * @version 1.0
+ * @property {array} owners - The IDs of ServerGroups which can use this plugin
+ * @memberof Plugin-createClan
+ */
 const config = {
 	owners: [40, 13, 23, 14]
 };
 
+// Stores targetUser in an objects with an property equal to the targets clid
 let currentlyMoving = {};
 
+/**
+ * Represents a user object which is making channels
+ *
+ * @version 1.0
+ * @memberof Plugin-createClan
+ * @type {object}
+ * @param {object} invoker - The Teamspeak Client object who sent the request
+ * @param {object} target - The Teamspeak Client object who is the target of the request
+ * @property {object} invoker - The Teamspeak Client object who sent the request
+ * @property {object} target - The Teamspeak Client object who is the target of the request
+ * @property {number} date - Numeric value corresponding to when the user's session started
+ */
 function targetUser(invoker, target) {
-	this.processid = 1;
 	this.target = target;
 	this.invoker = invoker;
 	let currentDate = new Date();
@@ -24,7 +42,7 @@ function targetUser(invoker, target) {
 
 /**
  * This function is called whenever Jarvis recieves a private message
- * Returns a message containing the all available help commands, given by each plugin
+ * Will ask target-user(s) if they want to join the invoker user's channel
  * @version 1.0
  * @memberof Plugin-joinMe
  * @param	{String} msg - Message string sent to Jarvis
@@ -36,14 +54,17 @@ exports.onMessage = function(msg, jarvis) {
 	const invoker = jarvis.invoker;
 	const invoker_name = invoker.getCache().client_nickname;
 
-  // Check if invoker has been requested already!
+	// Check if invoker has been requested already!
 	if (typeof currentlyMoving[invoker.getCache().clid] != "undefined") {
+    
 		if (command.slice(0, 2) == "!y") {
+      // Move the target
 			jarvis.ts.clientMove(invoker.getCache().clid, currentlyMoving[invoker.getCache().clid].invoker.getCache().cid).catch(e => {
 				console.error("CATCHED", e.message);
 			});
 			terminateSession(invoker, jarvis);
 		} else {
+      // Don't move the target and notify the requestor
 			let requestor = currentlyMoving[invoker.getCache().clid].invoker;
 			let target_name = invoker.getCache().client_nickname;
 			requestor.message("Yo, [color=#0069ff][b]" + target_name + "[/b][/color] does not want to move to your channel!");
@@ -51,7 +72,7 @@ exports.onMessage = function(msg, jarvis) {
 		}
 	}
 
-	// Check for the plugins command
+	// Check for the plugin's command
 	if (command.toLowerCase() != "!joinme") {
 		return;
 	}
@@ -62,37 +83,41 @@ exports.onMessage = function(msg, jarvis) {
 		return;
 	}
 
-	// Check user entered target users
+	// Check user entered target-user(s)
 	if (items === undefined || items.length == 0) {
 		invoker.message("[b]No user names entered![/b] - Type '!joinMe <userName>'");
 		return;
 	}
 
-	// Construct targets array
-	const targets = items.map(v => {
-		return v.substring(0, v.length - 1);
+	// Construct target user name array
+	const targets = items.map(p => {
+		return p.substring(0, p.length - 1);
 	});
 
+  // Check user is not moving self
 	if (selfMoveCheck(targets, invoker_name)) {
 		invoker.message("[b]Joining on yourself is not possible![/b]");
 		return;
 	}
 
+  // Execute the request for each target user who was found to be valid
 	Promise.all([getTargetsArray(targets, jarvis, invoker), jarvis.ts.getChannelByID(invoker.getCache().cid)])
 		.then(res => {
 			if (res[0] === undefined || res[0].length == 0) {
 				console.log("No Valid Clients To Move");
 				return;
-			}
-
+      }
+      
+      // Get the name of the channel the user is asked to move to
 			let target_channel_name = res[1].getCache().channel_name;
-
+      
+      // Request each user
 			res[0].forEach(target => {
 				let target_clid = target.getCache().clid;
 				currentlyMoving[target_clid] = new targetUser(invoker, target);
 				target.message("\n Would you like to join [color=#0069ff][b]" + invoker_name + "[/b][/color] in Channel: " + target_channel_name + "? \n Type !yes to move, or !no to remain");
 			});
-
+      // Notify requestor of success
 			invoker.message("[b]Request sent to " + res[0].length + " clients![/b]");
 		})
 		.catch(err => {
@@ -102,7 +127,7 @@ exports.onMessage = function(msg, jarvis) {
 
 /**
  * Gets the teamspeak 3 client objects from their respective client nickname and returns a Promise containing <TeamSpeakClient>
- *
+ * Also checks: if target is online, if target is already in channel, target already requested
  * @version 1.0
  * @memberof Plugin-joinMe
  * @async
@@ -119,7 +144,9 @@ async function getTargetsArray(targets, jarvis, invoker) {
 			invoker.message("[color=#0069ff][b]" + name + "[/b][/color] is offline or unkown");
 		} else if (t_client.getCache().cid == invoker.getCache().cid) {
 			invoker.message("[color=#0069ff][b]" + name + "[/b][/color] is already here!");
-		} else {
+    } else if (typeof currentlyMoving[t_client.getCache().clid] != "undefined") {
+      invoker.message("[color=#0069ff][b]" + name + "[/b][/color] already requested, please wait up to 2min before requesting again!");
+    } else {
 			target_clients.push(t_client);
 		}
 	}
