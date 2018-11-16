@@ -8,9 +8,13 @@ let plugins = require("./plugins").init(config.plugins);
 
 // Object containing essential functions and messages which plugins can access
 let generic_helpers = {
-	help_message: function() {
+	help_message: () => {
 		return plugins.getHelpMessage();
 	},
+	plugin_config: plugin_name => {
+		return config.plugin_settings[plugin_name];
+	},
+
 	error_message: config.messages
 };
 
