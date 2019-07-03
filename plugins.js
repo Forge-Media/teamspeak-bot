@@ -1,3 +1,9 @@
+/**
+ * A collection of utility functions which load all <pluginName>.js files exported functions,
+ * as well as managing initialisation (init) and active-plugin-worker scripts (run),
+ * finally provides a route to core plugin functions such as (onMessage).
+ */
+
 const fs = require("fs");
 
 function fetchPlugin(name) {
@@ -7,52 +13,55 @@ function fetchPlugin(name) {
 	return plugin;
 }
 
-let plugins = [];
+// Stores each plugin's exported modules (array/function)
+let pluginsArray = [];
 
-exports.init = function(config_plugins) {
+exports.init = config_plugins => {
 	if (typeof config_plugins == "object") {
 		for (name in config_plugins) {
-			let plugin_state = config_plugins[name];
-			if (plugin_state === true) {
-				plugins.push(fetchPlugin(name));
+			// Checks that plugin is enabled in config (true)
+			if (config_plugins[name]) {
+				pluginsArray.push(fetchPlugin(name));
 			}
 		}
 	}
+	// Returns all export functions in plugins.js
+
 	return exports;
 };
 
-exports.startPlugins = function(helpers) {
-	plugins.forEach(function(item) {
+exports.startPlugins = helpers => {
+	pluginsArray.forEach(item => {
 		if (typeof item.run == "function") {
 			item.run(helpers);
 		}
 	});
 };
 
-exports.onMessage = function(msg, jarvis) {
-	plugins.forEach(function(item) {
+exports.onMessage = (msg, jarvis) => {
+	pluginsArray.forEach(item => {
 		if (typeof item.onMessage == "function") {
 			item.onMessage(msg, jarvis);
 		}
 	});
 };
 
-exports.getHelpMessage = function() {
+exports.getHelpMessage = () => {
 	let response = "[b]Jarvis Assistant Bot - Commands:[/b] \n";
 
 	[].concat
 		.apply(
 			[],
-			plugins
-				.filter(function(item) {
+			pluginsArray
+				.filter(item => {
 					return typeof item.help != "undefined";
 				})
-				.map(function(item) {
+				.map(item => {
 					return item.help;
 				})
 		)
-		.map(function(item) {
-			response += "[b]" + item[0] + "[/b]  -  " + item[1] + "\n";
+		.map(item => {
+			response += `[b]${item[0]}[/b] - ${item[1]}\n`;
 		});
 
 	return response;
