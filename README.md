@@ -11,7 +11,7 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 
 - `!createClan` - Simplified mass-channel creation of Clan-Channels, sets permissions and properties of each channel and can creates a Clan-Group from template group.
 - `!joinMe <userName>` - Requests another user to join your channel. Jarvis moves them if they accept. Permissions independent!
-- `!purgeVerified` - Removes all users in a set Server Group which are not also lsited in a Verified Database File. Requires: ([steam-ts!](https://github.com/Forge-Media/steam-ts))
+- `!purgeVerified` - Removes all users in a set Server Group which are not also lsited in a Verified Database File. **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
 - `!cid` - Plugin used to return a message containing the 'cid' of the channel the client is in
 - `!help` - Get help and command list
 
