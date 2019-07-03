@@ -31,18 +31,21 @@ let currentlyCreating = {};
 /**
  * Represents a user object which is making channels
  *
- * @version 1.0
+ * @version 1.1
  * @memberof Plugin-createClan
  * @type {object}
  * @param {object} client - The Client which sent a textmessage
  * @property {number} processid - Keeps track of stage at which user is at in clan channel creation
  * @property {object} client - The Client which sent a textmessage
+ * @property {object} channels - Contains all the TeamspeakChannel objects which this user has created
+ * @property {string} clanTag - Stores the 2-4 character tag for the clan's server group
  * @property {number} date - Numeric value corresponding to when the user's session started
  */
 function creatingUser(client) {
 	this.processid = 1;
 	this.client = client;
 	this.channels = [];
+	this.clanTag = "";
 	let currentDate = new Date();
 	this.date = currentDate.getTime();
 }
@@ -51,7 +54,7 @@ function creatingUser(client) {
  * This function is called whenever Jarvis recieves a private message
  * Will create a group of channels for a clan and sets the permissions and properties of each channel
  *
- * @version 1.0
+ * @version 1.0.1
  * @memberof Plugin-createClan
  * @param	{String} msg - Message string sent to Jarvis
  * @param	{String} jarvis - Middleware Function: Provides access to certain Jarvis functions.
@@ -59,7 +62,7 @@ function creatingUser(client) {
 exports.onMessage = function(msg, jarvis) {
 	const message = msg.toLowerCase();
 	let client = jarvis.invoker;
-	let clid = client.getCache().clid;
+	let clid = client.getPropertyByName("clid");
 
 	// Is this client already creating channels
 	if (typeof currentlyCreating[clid] === "undefined") {
@@ -86,7 +89,7 @@ exports.onMessage = function(msg, jarvis) {
 
 		// Check if another command was entered, rather than channel name
 		if (channelName[1].charAt(0) == "!" && !(channelName[1].toLowerCase() == "!stop")) {
-			client.message("[b]Command Entered[/b] - Please re-enter Channel " + currentlyCreating[clid].channels.length + " Name:");
+			client.message(`[b]Command Entered[/b] - Please re-enter Channel ${currentlyCreating[clid].channels.length} Name:`);
 			return;
 		}
 
@@ -94,12 +97,12 @@ exports.onMessage = function(msg, jarvis) {
 		if (channelName[1].toLowerCase() != "!stop") {
 			if (!Array.isArray(currentlyCreating[clid].channels) || !currentlyCreating[clid].channels.length) {
 				// Parent channel
-				currentlyCreating[clid].channels.push(new Channel(channelName[1], null));
+				currentlyCreating[clid].channels.push(new Channel(channelName[1]));
 				client.message("Enter Channel 1 Name:");
 			} else {
 				// Child channel
 				currentlyCreating[clid].channels.push(new Channel(channelName[1], currentlyCreating[clid].channels[0]));
-				client.message("Enter Channel " + currentlyCreating[clid].channels.length + " Name:");
+				client.message(`Enter Channel ${currentlyCreating[clid].channels.length} Name:`);
 			}
 			// Return here insures plugin will request another channel when msg != stop
 			return;
@@ -111,7 +114,7 @@ exports.onMessage = function(msg, jarvis) {
 			return;
 		}
 
-		client.message("Constructing " + currentlyCreating[clid].channels.length + " channels...");
+		client.message(`Constructing ${currentlyCreating[clid].channels.length} channels...`);
 
 		constructChannels(jarvis)
 			.then(res => {
@@ -146,7 +149,7 @@ exports.onMessage = function(msg, jarvis) {
 		client.message("Enter Clan Tag: (Between 2 & 4 characters!)");
 	} else if (currentlyCreating[clid].processid == 3) {
 		// Check tag is correct length
-		
+
 		if (msg.length > 4 || msg.length < 2) {
 			client.message(jarvis.error_message.sanitation);
 			return;
@@ -159,7 +162,7 @@ exports.onMessage = function(msg, jarvis) {
 /**
  * Will attempt to create all channels present in the channel array
  *
- * @version 1.0
+ * @version 1.0.1
  * If parent-channel 'channelCreate()' fails, the function will terminate passing error in Promise
  * If child-channel 'channelCreate()' fails, error is caught and next child will be attempted
  *
@@ -169,14 +172,15 @@ exports.onMessage = function(msg, jarvis) {
  * @returns {Promise.<String>}
  */
 async function constructChannels(jarvis) {
-	let cid = jarvis.invoker.getCache().clid;
+	let cid = jarvis.invoker.getPropertyByName("clid");
 	let result = "Channels created successfully, setting permissions...";
+
 	// loop through channel array
 	for (let c of currentlyCreating[cid].channels) {
 		// Parent Channel
 		if (!c.parent) {
 			await jarvis.ts.channelCreate(c.name, c.properties).then(response => {
-				c.cid = response._static.cid;
+				c.cid = response.cid;
 			});
 			// Child Channels
 		} else {
@@ -186,7 +190,7 @@ async function constructChannels(jarvis) {
 				.channelCreate(c.name, c.properties)
 				.then(response => {
 					// Store created channels ID for permissions
-					c.cid = response._static.cid;
+					c.cid = response.cid;
 				})
 				.catch(err => {
 					// CAUGHT: External error
@@ -202,14 +206,14 @@ async function constructChannels(jarvis) {
  * Will attempt to set permissions for all channels present in 'channels' array
  * If 'channelSetPerm()' fails, error is caught and next permission will be attempted
  *
- * @version 1.0
+ * @version 1.0.1
  * @memberof Plugin-createClan
  * @async
  * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
  * @returns {Promise.<String>}
  */
 async function setChannelPermissions(jarvis) {
-	let cid = jarvis.invoker.getCache().clid;
+	let cid = jarvis.invoker.getPropertyByName("clid");
 	// Result assumes success
 	let result = "Permissions set successfully";
 	// loop through channel array
@@ -235,7 +239,7 @@ async function setChannelPermissions(jarvis) {
 /**
  * Will attempt to create a clan ServerGroup and add a sortID propery permission
  *
- * @version 1.0
+ * @version 1.1
  * @memberof Plugin-createClan
  * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
  * @param	{object} client - The Client which sent a textmessage
@@ -243,14 +247,17 @@ async function setChannelPermissions(jarvis) {
  */
 function constructGroup(jarvis, client, tag) {
 	let clan_tag = tag.toUpperCase();
+	let clid = client.getPropertyByName("clid");
 	jarvis.ts
 		.serverGroupCopy(config.ssgid, 0, 1, clan_tag)
 		.then(res => {
 			let sort_id = getGroupSortID(clan_tag);
-			jarvis.ts.serverGroupAddPerm(res.sgid, "i_group_sort_id", sort_id, true, 0, 0);
+			jarvis.ts.serverGroupAddPerm(res.sgid, "i_group_sort_id", sort_id, 0, 0);
 		})
 		.then(() => {
-			client.message("Clan group: " + clan_tag + " added successfully");
+			client.message(`Clan group: ${clan_tag} added successfully`);
+			currentlyCreating[clid].clanTag = clan_tag;
+
 			terminateSession(client, jarvis);
 		})
 		.catch(err => {
@@ -259,7 +266,7 @@ function constructGroup(jarvis, client, tag) {
 				console.error("CATCHED", err.message);
 				terminateSession(client, jarvis);
 			}
-			client.message("[b]" + clan_tag + " already exists! Try another tag:[/b]");
+			client.message(`[b] ${clan_tag} already exists! Try another tag:[/b]`);
 		});
 }
 
@@ -299,14 +306,38 @@ function sanitation(message) {
 
 /**
  * Terminates user from currentlyCreating array, ending session
+ * and sends a log of the event to slack
  *
- * @version 1.0
+ * @version 1.1
  * @memberof Plugin-createClan
  * @param	{object} client - The Client which sent a textmessage
  * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
  */
 function terminateSession(client, jarvis) {
-	let clid = client.getCache().clid;
+	let clid = client.getPropertyByName("clid");
+
+	// Create a log and send to Slack
+	let logMessage = [`*JARVIS BOT LOG:*`];
+	let nickname = client.getPropertyByName("client_nickname");
+
+	// Channel creation Log
+	if (currentlyCreating[clid].processid >= 2) {
+		let clanName = currentlyCreating[clid].channels[0].name;
+		clanName = clanName.split("★");
+		logMessage.push(`> ${nickname} Created ${currentlyCreating[clid].channels.length} channels for Clan: ${clanName[1]}`);
+
+		// Channel creation and group log
+		if (currentlyCreating[clid].processid == 3) {
+			let clanTag = currentlyCreating[clid].clanTag;
+			logMessage.push(`> ${nickname} Created a server group for Clan: ${clanName[1]} with the tag: ${clanTag}`);
+		}
+
+		// Send to Slack
+		if (logMessage.length > 1) {
+			jarvis.log_to_slack(logMessage.join("\n"));
+		}
+	}
+
 	delete currentlyCreating[clid];
 	client.message(jarvis.error_message.terminate);
 }
@@ -334,7 +365,7 @@ exports.run = helpers => {
 						// Notify the invoker
 						invoker.message(helpers.error_message.expired);
 						// Terminate the invoker's session
-						delete currentlyCreating[invoker.getCache().clid];
+						delete currentlyCreating[invoker.getPropertyByName("clid")];
 					}
 				}
 			}

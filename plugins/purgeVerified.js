@@ -3,26 +3,22 @@
  * @example !purgeVerified
  * @module Plugin-purgeVerified
  */
-
 fs = require("fs");
 path = require("path");
 
 exports.help = [["!purgeVerified", "Remove invalid users in the Verified Server Group"]];
 
 /**
- * Plugin configuration settings, please change to match your server
+ * Plugin configuration settings, please change to match your server (MOVED TO CONFIG.JS) and populated 'on.message'
  * @version 1.0
  * @property {array} owners - The IDs of ServerGroups which can use this plugin
  * @property {number} group_id - The ID of ServerGroup to be purged
  * @property {String} database_file - Path to the Verified Database File
  * @memberof Plugin-purgeVerified
  */
-const config = {
-	owners: [14],
-	group_id: 40,
-	database_file: "contrib/verified.json"
-};
+let config = null;
 
+// Populated later from (config.js) steamTS-Intergration settings
 let verified_db_file = null;
 let verified_group;
 let verified_db_array;
@@ -31,7 +27,7 @@ let verified_db_array;
  * This function is called whenever Jarvis recieves a private message
  * Will create a group of channels for a clan and sets the permissions and properties of each channel
  *
- * @version 1.0
+ * @version 1.1
  * @memberof Plugin-purgeVerified
  * @param	{String} msg - Message string sent to Jarvis
  * @param	{String} jarvis - Middleware Function: Provides access to certain Jarvis functions.
@@ -42,6 +38,9 @@ exports.onMessage = function(msg, jarvis) {
 	const invoker = jarvis.invoker;
 
 	if (message == "!purgeverified") {
+		// Get configuration settings from config.js
+		config = jarvis.integrations.steamTS.config;
+
 		if (!config.owners.some(r => jarvis.groups.indexOf(r) >= 0)) {
 			invoker.message(jarvis.error_message.forbidden);
 			return;
@@ -73,8 +72,12 @@ exports.onMessage = function(msg, jarvis) {
 				jarvis.ts
 					.serverGroupClientList(config.group_id)
 					.then(res => {
-						verified_group = res;
-						invoker.message(`[b]Purge Started on Server Group: (${config.group_id})[/b] \n This may take a while!`);
+						// 'res' returns client list as an object, later we will need to iterate
+						// through the clients using an async await function, therfore convert
+						// the object to an array using Object.entries()
+						verified_group = Object.entries(res);
+						invoker.message(`\n[b]Purge Started on Server Group:[/b] (${config.group_id}) Contains ${verified_group.length} users! \n [color=red][b]This may take a while![/b][/color]`);
+
 						// Run purge function
 						purgeVerified(invoker, jarvis);
 					})
@@ -89,44 +92,52 @@ exports.onMessage = function(msg, jarvis) {
 /**
  * This function will attempt to remove any user in a Server Group which is not also in a Verified Database File
  *
- * @version 1.0
+ * @version 1.1
  * @memberof Plugin-purgeVerified
+ * @async
  * @param	{String} jarvis - Middleware Function: Provides access to certain Jarvis functions.
  * @param	{Object} invoker - The Teamspeak Client object which made the request
  */
-function purgeVerified(invoker, jarvis) {
+async function purgeVerified(invoker, jarvis) {
 	let counter = 0;
 	// Loop through all users in the Verified Server Group
-	verified_group.forEach(element => {
+	for (let element of verified_group) {
 		// Store Teamspeak Client details
 		let found = false;
-		let sg_user_db_id = element.cldbid.toString();
-		let sg_user_id = element.client_unique_identifier;
-		let sg_user_name = element.client_nickname;
+		let sg_user_db_id = element[1].cldbid.toString();
+		let sg_user_id = element[1].client_unique_identifier;
+		let sg_user_name = element[1].client_nickname;
 		// Loop through the Verfied Users Database
 		for (let i = 0; i < verified_db_array.length; i++) {
 			let db_user_id = verified_db_array[i].teamspeakid;
 			if (sg_user_id === db_user_id) {
 				found = true;
-				return;
+				break;
 			}
 		}
-    // User was not found in the Verified Users Database, thus they are invalid and are removed from the server group
+
+		// User was not found in the Verified Users Database, thus they are invalid and are removed from the server group
 		if (!found) {
-			counter++;
-			console.info(`Purging: ${sg_user_name}`);
-			jarvis.ts.serverGroupDelClient(sg_user_db_id, config.group_id).catch(err => {
-				console.error("CATCHED", err.message);
-			});
+			await jarvis.ts
+				.serverGroupDelClient(sg_user_db_id, config.group_id)
+				.then(res => {
+					counter++;
+					console.info(`Purging: ${sg_user_name}`);
+					invoker.message(`Purging: [color=#0069ff][b]${sg_user_name}[/b][/color] ID: ${sg_user_id}`);
+				})
+				.catch(err => {
+					console.error("CATCHED", err.message);
+					client.message(jarvis.error_message.external + err.message);
+				});
 		}
-  });
-  
-  // Send invoker information about The Purge!!
+	}
+
+	// Send invoker information about The Purge!!
 	invoker.message(`${verified_group.length} total verified users on Teamspeak!`);
 	invoker.message(`${verified_db_array.length} total verified users in database!`);
 	if (counter > 0) {
 		invoker.message(`[b]FINISHED[/b]: ${counter} users purged from server group!`);
 	} else {
-    invoker.message(`[b]FINISHED[/b]: No invalid users found!`);
+		invoker.message(`[b]FINISHED[/b]: No invalid users found!`);
 	}
 }

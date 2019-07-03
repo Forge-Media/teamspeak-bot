@@ -8,4 +8,4 @@ config.js
 !.vscode/launch.json
 !.vscode/extensions.json
 
-plugins/contrib/verified.json
+plugins/contrib/data/*
