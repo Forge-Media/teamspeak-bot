@@ -1,12 +1,11 @@
-/**
- * An attempt to extend slackbots Bot class.
- * As the existing class lacks new slack api end points.
- * Wish me luck
- * @module Bot Extends Bot Plugin-slackBot
- */
-
 const Bot = require("slackbots");
 
+/**
+ * This is a thin wrapper around slackbots,
+ * which extends the functionality with updated Slack API end-points
+ * @version 1.1
+ * @property {object} params - Contains config settings for your slack bot API
+ */
 class slackBot extends Bot {
 	constructor(params) {
 		super(params);

@@ -1,15 +1,12 @@
-/**
- * This is a thin wrapper around ts3-nodejs-library which
- * handles conencting, closing and dispatching appropriately.
- */
-
 const TeamSpeak3 = require("ts3-nodejs-library");
 const slackBot = require("./slack-api");
 
 /**
+ * This is a thin wrapper around ts3-nodejs-library and slackbots,
+ * which handles conencting, closing and dispatching appropriately.
  * Represents a Jarvis Bot Instance
  * @version 1.1
- * @type {object}
+ * @type {class}
  * @param {object} config - Config object passed from a configuration file
  * @param {number} cid - The Bot's Default Channel passed as a ChannelID number
  * @property {TeamSpeak3 Class} ts - Stores an instance of the TeamSpeak Query Class
