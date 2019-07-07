@@ -86,6 +86,4 @@ You can get support by either going to the [issues page](https://github.com/Forg
 - Jeremy Paton (Development and Documentation)
 - Marc Berman (Assistance and testing)
 
-Copyright (c) Forge Gaming Network 2018
-
 This work is licensed under a [Mozilla Public License 2.0](https://github.com/Forge-Media/teamspeak-bot/blob/master/LICENSE)
