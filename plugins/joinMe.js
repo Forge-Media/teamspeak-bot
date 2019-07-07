@@ -10,6 +10,8 @@ exports.help = [["!joinMe <userName> <userName2>...", "Requests another user to 
 
 /**
  * Plugin configuration settings, please change to match your server
+ * CHANGE THESE SETTINGS!
+ *
  * @version 1.0
  * @property {array} owners - The IDs of ServerGroups which can use this plugin
  * @memberof Plugin-createClan
@@ -52,22 +54,21 @@ exports.onMessage = function(msg, jarvis) {
 	const items = msg.split(" <");
 	const command = items.shift();
 	const invoker = jarvis.invoker;
-	
-	const invoker_name = invoker.getPropertyByName('client_nickname');
+
+	const invoker_name = invoker.getPropertyByName("client_nickname");
 
 	// Check if invoker has been requested already!
-	if (typeof currentlyMoving[invoker.getPropertyByName('clid')] != "undefined") {
-    
+	if (typeof currentlyMoving[invoker.getPropertyByName("clid")] != "undefined") {
 		if (command.slice(0, 2) == "!y") {
-      // Move the target
-			jarvis.ts.clientMove(invoker.getPropertyByName('clid'), currentlyMoving[invoker.getPropertyByName('clid')].invoker.getPropertyByName('cid')).catch(e => {
+			// Move the target
+			jarvis.ts.clientMove(invoker.getPropertyByName("clid"), currentlyMoving[invoker.getPropertyByName("clid")].invoker.getPropertyByName("cid")).catch(e => {
 				console.error("CATCHED", e.message);
 			});
 			terminateSession(invoker, jarvis);
 		} else {
-      // Don't move the target and notify the requestor
-			let requestor = currentlyMoving[invoker.getPropertyByName('clid')].invoker;
-			let target_name = invoker.getPropertyByName('client_nickname');
+			// Don't move the target and notify the requestor
+			let requestor = currentlyMoving[invoker.getPropertyByName("clid")].invoker;
+			let target_name = invoker.getPropertyByName("client_nickname");
 			requestor.message("Yo, [color=#0069ff][b]" + target_name + "[/b][/color] does not want to move to your channel!");
 			terminateSession(invoker, jarvis);
 		}
@@ -95,30 +96,30 @@ exports.onMessage = function(msg, jarvis) {
 		return p.substring(0, p.length - 1);
 	});
 
-  // Check user is not moving self
+	// Check user is not moving self
 	if (selfMoveCheck(targets, invoker_name)) {
 		invoker.message("[b]Joining on yourself is not possible![/b]");
 		return;
 	}
 
-  // Execute the request for each target user who was found to be valid
-	Promise.all([getTargetsArray(targets, jarvis, invoker), jarvis.ts.getChannelByID(invoker.getPropertyByName('cid'))])
+	// Execute the request for each target user who was found to be valid
+	Promise.all([getTargetsArray(targets, jarvis, invoker), jarvis.ts.getChannelByID(invoker.getPropertyByName("cid"))])
 		.then(res => {
 			if (res[0] === undefined || res[0].length == 0) {
 				console.log("No Valid Clients To Move");
 				return;
-      }
-      
-      // Get the name of the channel the user is asked to move to
-			let target_channel_name = res[1].getPropertyByName('channel_name');
-      
-      // Request each user
+			}
+
+			// Get the name of the channel the user is asked to move to
+			let target_channel_name = res[1].getPropertyByName("channel_name");
+
+			// Request each user
 			res[0].forEach(target => {
-				let target_clid = target.getPropertyByName('clid');
+				let target_clid = target.getPropertyByName("clid");
 				currentlyMoving[target_clid] = new targetUser(invoker, target);
 				target.message("\n Would you like to join [color=#0069ff][b]" + invoker_name + "[/b][/color] in Channel: " + target_channel_name + "? \n Type !yes to move, or !no to remain");
 			});
-      // Notify requestor of success
+			// Notify requestor of success
 			invoker.message("[b]Request sent to " + res[0].length + " clients![/b]");
 		})
 		.catch(err => {
@@ -143,11 +144,11 @@ async function getTargetsArray(targets, jarvis, invoker) {
 		let t_client = await jarvis.ts.getClientByName(name);
 		if (typeof t_client == "undefined") {
 			invoker.message("[color=#0069ff][b]" + name + "[/b][/color] is offline or unkown");
-		} else if (t_client.getPropertyByName('cid') == invoker.getPropertyByName('cid')) {
+		} else if (t_client.getPropertyByName("cid") == invoker.getPropertyByName("cid")) {
 			invoker.message("[color=#0069ff][b]" + name + "[/b][/color] is already here!");
-    } else if (typeof currentlyMoving[t_client.getPropertyByName('clid')] != "undefined") {
-      invoker.message("[color=#0069ff][b]" + name + "[/b][/color] already requested, please wait up to 2min before requesting again!");
-    } else {
+		} else if (typeof currentlyMoving[t_client.getPropertyByName("clid")] != "undefined") {
+			invoker.message("[color=#0069ff][b]" + name + "[/b][/color] already requested, please wait up to 2min before requesting again!");
+		} else {
 			target_clients.push(t_client);
 		}
 	}
@@ -181,7 +182,7 @@ function selfMoveCheck(targets, invoker_name) {
  * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
  */
 function terminateSession(client, jarvis) {
-	let clid = client.getPropertyByName('clid');
+	let clid = client.getPropertyByName("clid");
 	delete currentlyMoving[clid];
 	client.message(jarvis.error_message.terminate);
 }
@@ -209,7 +210,7 @@ exports.run = helpers => {
 						// Notify the invoker
 						target.message(helpers.error_message.expired);
 						// Terminate the invoker's session
-						delete currentlyMoving[target.getPropertyByName('clid')];
+						delete currentlyMoving[target.getPropertyByName("clid")];
 					}
 				}
 			}

@@ -11,10 +11,12 @@ exports.help = [["!createClan", "Initiate channel template creation for a clan"]
 
 /**
  * Plugin configuration settings, please change to match your server
+ * CHANGE THESE SETTINGS!
+ *
  * @version 1.0
  * @property {array} owners - The IDs of ServerGroups which can use this plugin
  * @property {number} ssgid - The source ServerGroup ID (template group you need to setup in Teamspeak)
- * @property {number} sortID_start - Value used to calculate the Clan's ServerGroup's 'i_group_sort_id' for alphabetical sorting.
+ * @property {number} sortID_start - Value used to calculate the Clans ServerGroup's 'i_group_sort_id' for alphabetical sorting.
  * @property {number} sortID_start - Value used for increment of 'i_group_sort_id' E.g. 0-9 = +901s, a = 1000s, b = 1100s, c = 1200, etc
  * @memberof Plugin-createClan
  */

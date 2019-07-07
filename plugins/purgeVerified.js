@@ -1,5 +1,7 @@
 /**
- * Plugin used to remove any user in a Server Group which is not also in a Verified Database File
+ * Plugin used to remove any user in a Server Group which is not also in a Verified Database File,
+ * REQUIRES: Steam-TS integration to work: https://github.com/Forge-Media/steam-ts
+ *
  * @example !purgeVerified
  * @module Plugin-purgeVerified
  */
@@ -9,7 +11,9 @@ path = require("path");
 exports.help = [["!purgeVerified", "Remove invalid users in the Verified Server Group"]];
 
 /**
- * Plugin configuration settings, please change to match your server (MOVED TO CONFIG.JS) and populated 'on.message'
+ * Plugin configuration settings
+ * MOVED TO: config.js under 'Integrations > steamTS' settings
+ *
  * @version 1.0
  * @property {array} owners - The IDs of ServerGroups which can use this plugin
  * @property {number} group_id - The ID of ServerGroup to be purged
@@ -18,7 +22,7 @@ exports.help = [["!purgeVerified", "Remove invalid users in the Verified Server 
  */
 let config = null;
 
-// Populated later from (config.js) steamTS-Intergration settings
+// Populated later from: config.js under 'steamTS-Intergration' settings
 let verified_db_file = null;
 let verified_group;
 let verified_db_array;
