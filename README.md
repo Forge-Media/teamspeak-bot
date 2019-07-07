@@ -88,4 +88,4 @@ You can get support by either going to the [issues page](https://github.com/Forg
 
 Copyright (c) Forge Gaming Network 2018
 
-This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+This work is licensed under a [Mozilla Public License 2.0](https://github.com/Forge-Media/teamspeak-bot/blob/master/LICENSE)
