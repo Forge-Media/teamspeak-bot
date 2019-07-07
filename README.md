@@ -30,13 +30,16 @@ Install the bot via npm:
 ```sh
 $ npm install
 ```
+## Jarvis Configuration
+
+Make sure you've renamed **config.example.js** to **config.js** before starting the bot, followed by adding your server query connection details, so that it can connect to your Teamspeak 3 server.
 
 Edit the following configuration files:
 
 - **config.js**
 - **/plugins/PluginName.js** config settings
 
-More documentation on this below!
+More documentation on setting up plugins below!
 
 ## Run Jarvis
 
@@ -55,10 +58,6 @@ I recommend using [PM2](https://github.com/Unitech/pm2) to run the bot, PM2 is a
 ```sh
 $ pm2 start app.js --name Jarvis
 ```
-
-## Jarvis Configuration
-
-Make sure you've renamed **config.example.js** to **config.js** before starting the bot, followed by adding your server query connection details, so that it can connect to your Teamspeak 3 server.
 
 ## Setup Plugins
 
