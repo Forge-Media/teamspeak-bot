@@ -31,7 +31,7 @@ let verified_db_array;
  * This function is called whenever Jarvis recieves a private message
  * Will create a group of channels for a clan and sets the permissions and properties of each channel
  *
- * @version 1.1
+ * @version 1.2
  * @memberof Plugin-purgeVerified
  * @param	{String} msg - Message string sent to Jarvis
  * @param	{String} jarvis - Middleware Function: Provides access to certain Jarvis functions.
@@ -45,25 +45,22 @@ exports.onMessage = function(msg, jarvis) {
 		// Get configuration settings from config.js
 		config = jarvis.integrations.steamTS.config;
 
+		// Check invoker has permissions
 		if (!config.owners.some(r => jarvis.groups.indexOf(r) >= 0)) {
 			invoker.message(jarvis.error_message.forbidden);
 			return;
 		}
 
-		// Check database file exists
-		if (!fs.existsSync(path.join(__dirname, config.database_file))) {
-			console.error(`${config.database_file} not found`);
-			invoker.message(`${jarvis.error_message.internal} Verified Database File Missing!`);
-			return;
-		}
-
 		// Read database file
-		fs.readFile(path.join(__dirname, config.database_file), function read(err, data) {
+		fs.readFile(path.join(__dirname, config.database_file), (err, data) => {
 			if (err) {
-				console.error("CATCHED", err);
+				invoker.message(`${jarvis.error_message.internal} Steam-TS Verified Database File Missing!`);
+				console.error("CATCHED", err.message);
+				return;
 			} else {
 				// Check database file is not empty
 				if (data === undefined || data.length == 0) {
+					invoker.message(`${jarvis.error_message.internal} Steam-TS Verified Database File Empty!`);
 					console.error("CATCHED", "verified.json empty");
 					return;
 				}
