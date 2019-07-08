@@ -63,9 +63,9 @@ $ pm2 start app.js --name Jarvis
 
 #### The following plugin's require configuration to be used, see these links to the wiki for help:
 
-- `!createClan` - [How to setup the !createClan plugin?](https://github.com/Forge-Media/teamspeak-bot/wiki/Plugins#createclan)
+- `!createClan` - [How to setup the !createClan plugin?](https://github.com/Forge-Media/teamspeak-bot/wiki/Plugin-Configuration#createclan)
 - `!joinMe <userName>` - [How to setup the !joinMe plugin?]()
-- `!purgeVerified` - [How to setup the !purgeVerified plugin?](https://github.com/Forge-Media/teamspeak-bot/wiki/Plugins#purgeverified) **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
+- `!purgeVerified` - [How to setup the !purgeVerified plugin?](https://github.com/Forge-Media/teamspeak-bot/wiki/Plugin-Configuration#purgeverified) **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
 
 
 ## Development
