@@ -9,12 +9,11 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 
 ## Included Plugin Commands
 
-- `!registerCSGO <Steam64id>`|`!deregisterCSGO`|`!statusCSGO` - Registers a user's Steam ID to obtain their CSGO Rank as a server group. Can check status and deregister.
-- `!createClan` - Simplified mass-channel creation of Clan-Channels, sets permissions and properties of each channel and can creates a Clan-Group from template group.
-- `!joinMe <userName>` - Requests another user to join your channel. Jarvis moves them if they accept. Permissions independent!
-- `!purgeVerified` - Removes all users in a set Server Group which are not also lsited in a Verified Database File. **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
-- `!cid` - Plugin used to return a message containing the 'cid' of the channel the client is in
-- `!help` - Get help and command list
+- `!createClan` - A simplified CLI-style mass-channel creator for the creation of clan channels and an associative server group. Sets permissions and properties of each channel automatically.
+- `!joinMe <userName>` - Requests another user to join your channel, independent of a user's permissions. Client moved if they accept.
+- `!purgeVerified` - Used to remove all users in a set Server Group which are not listed in [Steam-TS's](https://github.com/Forge-Media/steam-ts) Verified Database File.
+- `!cid` - Returns a message containing the channel ID of the channel the client is in.
+- `!help` - Provides bot help and available command list
 
 ## Install
 
@@ -65,9 +64,9 @@ $ pm2 start app.js --name Jarvis
 
 #### The following plugin's require configuration to be used, see these links to the wiki for help:
 
-- `!createClan` - How to setup the !createClan plugin?
-- `!joinMe <userName>` - How to setup the !joinMe plugin?
-- `!purgeVerified` - How to setup the !purgeVerified plugin? **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
+- `!createClan` - [How to setup the !createClan plugin?](https://github.com/Forge-Media/teamspeak-bot/wiki/Plugin-Configuration#createclan)
+- `!joinMe <userName>` - [How to setup the !joinMe plugin?]()
+- `!purgeVerified` - [How to setup the !purgeVerified plugin?](https://github.com/Forge-Media/teamspeak-bot/wiki/Plugin-Configuration#purgeverified) **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
 
 ## Development
 
