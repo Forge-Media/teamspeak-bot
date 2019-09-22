@@ -1,7 +1,7 @@
 # Jarvis Teamspeak-3 Bot
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/forge-media/teamspeak-bot.svg)
-[![David Dependency Status](https://david-dm.org/Forge-Media/teamspeak-bot.svg)](https://david-dm.org/Forge-Media/teamspeak-bot)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/Forge-Media/teamspeak-bot)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0957f4a29edc878ec073/maintainability)](https://codeclimate.com/github/Forge-Media/teamspeak-bot/maintainability)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/forge-media/teamspeak-bot.svg)
 
