@@ -3,6 +3,7 @@ node_modules
 # Ignore sensitive config files
 !config
 config/*
+package-lock.json
 
 # Except config examples
 !config/config.example.js
