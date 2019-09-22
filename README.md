@@ -9,6 +9,7 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 
 ## Included Plugin Commands
 
+- `!registerCSGO <Steam64id>`|`!deregisterCSGO`|`!statusCSGO` - Registers a user's Steam ID to obtain their CSGO Rank as a server group. Can check status and deregister.
 - `!createClan` - A simplified CLI-style mass-channel creator for the creation of clan channels and an associative server group. Sets permissions and properties of each channel automatically.
 - `!joinMe <userName>` - Requests another user to join your channel, independent of a user's permissions. Client moved if they accept.
 - `!purgeVerified` - Used to remove all users in a set Server Group which are not listed in [Steam-TS's](https://github.com/Forge-Media/steam-ts) Verified Database File.
