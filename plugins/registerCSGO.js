@@ -257,11 +257,10 @@ async function updateUsersTeamspeakGroups(invoker, newCSGORank) {
  *
  * @version 1.0
  * @memberof Plugin-registerCSGO
- * @param	{object} helpers - Generic helper object for error messages
  * @param	{object} jarvis - Middleware Function: Provides access to certain Jarvis functions.
  *
  */
-exports.run = (helpers, jarvis) => {
+exports.run = jarvis => {
 	async.forever(function(next) {
 		setTimeout(function() {
 			jarvis.steam
@@ -306,6 +305,6 @@ exports.run = (helpers, jarvis) => {
 				});
 			next();
 			// How often to update ranks in millseconds (2 hours - 7200000ms)
-		}, 15000);
+		}, 7200000);
 	});
 };
