@@ -9,6 +9,7 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 
 ## Included Plugin Commands
 
+- `!registerCSGO <Steam64id>`|`!deregisterCSGO`|`!statusCSGO` - Registers a user's Steam ID to obtain their CSGO Rank as a server group. Can check status and deregister.
 - `!createClan` - Simplified mass-channel creation of Clan-Channels, sets permissions and properties of each channel and can creates a Clan-Group from template group.
 - `!joinMe <userName>` - Requests another user to join your channel. Jarvis moves them if they accept. Permissions independent!
 - `!purgeVerified` - Removes all users in a set Server Group which are not also lsited in a Verified Database File. **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
@@ -30,6 +31,7 @@ Install the bot via npm:
 ```sh
 $ npm install
 ```
+
 ## Jarvis Configuration
 
 Make sure you've renamed **config.example.js** to **config.js** before starting the bot, followed by adding your server query connection details, so that it can connect to your Teamspeak 3 server.
@@ -66,7 +68,6 @@ $ pm2 start app.js --name Jarvis
 - `!createClan` - How to setup the !createClan plugin?
 - `!joinMe <userName>` - How to setup the !joinMe plugin?
 - `!purgeVerified` - How to setup the !purgeVerified plugin? **Requires: [steam-ts!](https://github.com/Forge-Media/steam-ts)**
-
 
 ## Development
 
