@@ -1,11 +1,21 @@
 node_modules
 
-config.js
+# Ignore sensitive config files
+!config
+config/*
 
+# Except config examples
+!config/config.example.js
+!config/serviceAccountKey.example.json
+
+# Ignore vscode
 .vscode/*
+
+# Except
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Ignore contributing data (Steam-TS verified Database)
 plugins/contrib/data/*

@@ -6,8 +6,9 @@
 	"scripts": {
 		"jarvis": "node app.js",
 		"start": "node app.js",
-		"dev": "nodemon app.js",
-		"debug": "nodemon --inspect app.js"
+		"dev": "nodemon --ignore config/ app.js",
+		"debug": "nodemon --ignore config/ --inspect app.js",
+		"firebase": "nodemon helpers/firebaseHelper.js"
 	},
 	"keywords": [
 		"teamspeak",
@@ -22,10 +23,13 @@
 	"license": "MIT",
 	"dependencies": {
 		"async": "^3.1.0",
+		"csgo": "^1.5.12",
+		"firebase-admin": "^8.6.0",
 		"slackbots": "^1.2.0",
-		"ts3-nodejs-library": "^1.16.0"
+		"steam": "^1.4.1",
+		"ts3-nodejs-library": "^2.0.3-a"
 	},
 	"devDependencies": {
-		"nodemon": "^1.19.1"
+		"nodemon": "^1.19.2"
 	}
 }

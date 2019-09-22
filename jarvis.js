@@ -1,5 +1,7 @@
-const TeamSpeak3 = require("ts3-nodejs-library");
-const slackBot = require("./slack-api");
+const { TeamSpeak } = require("ts3-nodejs-library");
+const slackHelper = require("./helpers/slackHelper");
+const firebaseHelper = require("./helpers/firebaseHelper");
+const steamHelper = require("./helpers/steamHelper");
 
 /**
  * This is a thin wrapper around ts3-nodejs-library and slackbots,
@@ -10,7 +12,8 @@ const slackBot = require("./slack-api");
  * @param {object} config - Config object passed from a configuration file
  * @param {number} cid - The Bot's Default Channel passed as a ChannelID number
  * @property {TeamSpeak3 Class} ts - Stores an instance of the TeamSpeak Query Class
- * @property {slack-api Class} slack - Stores an instance of the slackbots (slack-api) Class
+ * @property {slackHelper Class} slack - Stores an instance of the slackbots (slackHelper) Class
+ * @property {steamHelper Class} steam - Stores an instance of the slackbots (slackHelper) Class
  * @property {object} whoami - Contains usefull information about the Bot's connection
  * @property {boolean} enabled - If the bot is enabled (not in use currently)
  * @property {boolean} teamspeakReady - If Teamspeak-intergration is ready to be used
@@ -24,6 +27,8 @@ class Jarvis {
 	constructor(config) {
 		this.ts = null;
 		this.slack = null;
+		this.steam = null;
+		this.firebase = new firebaseHelper(config.settings.nickname);
 		this.whoami;
 		this.enabled = true;
 		this.teamspeakReady = false;
@@ -32,67 +37,47 @@ class Jarvis {
 		this.name = config.settings.nickname;
 		this.config = config;
 		this.onMessage = function() {};
-		this.connectToTS();
-		if (config.integrations.slackBot.config) {
-			this.connectToSlack();
-		}
+		this.init();
 	}
 
 	/**
-	 * Jarvis generic message handler
-	 * This function requires a callback-function which will be used when Jarvis recieves a message
+	 * Intilises Jarvis and connects to all Teamspeak 3 servers
+	 * On successful Teamspeak connection, integrations are established
+	 * Replaces connectToTS()
 	 * @version 1.0
 	 * @memberof Jarvis
-	 * @param {function} callback - Callback-function
 	 */
-	messageHandler(callback) {
-		this.onMessage = callback;
-	}
+	async init() {
+		try {
+			console.log(`${this.name}:`, "Connecting to Teamspeak");
+			this.ts = await TeamSpeak.connect(this.config.settings);
+		} catch (err) {
+			this.closeTS();
+			console.error("CATCHED", err.message);
+		}
 
-	/**
-	 * Disconnects Jarvis from a Teamspeak 3 server
-	 * @version 1.1
-	 * @memberof Jarvis
-	 */
-	closeTS() {
-		this.enabled = false;
-		this.teamspeakReady = false;
-	}
+		Promise.all([this.ts.registerEvent("textprivate"), this.ts.whoami()])
+			.then(res => {
+				console.info(`${this.name}:`, "Subscribed to Private Teamspeak Text Messages");
+				this.whoami = res[1];
+				this.teamspeakReady = true;
+				console.info(`${this.name}:`, "Teamspeak connection is Ready");
+				return this.ts.clientMove(this.whoami.client_id, this.cid);
+			})
+			.then(() => {
+				// Once Teamspeak 3 connection is established, connect to Slack
+				if (this.config.integrations.slackHelper.config) {
+					this.connectToSlack();
+				}
 
-	/**
-	 * Disconnects Jarvis from slack
-	 * @version 1.1
-	 * @memberof Jarvis
-	 */
-	closeSlack() {
-		this.slackReady = false;
-	}
-
-	/**
-	 * Connects Jarvis to a Teamspeak 3 server
-	 * @version 1.0.1
-	 * @memberof Jarvis
-	 */
-	connectToTS() {
-		this.ts = new TeamSpeak3(this.config.settings);
-		// Avoids the possibility for EventEmitter memory leaks
-		this.ts.setMaxListeners(110);
-		this.ts.on("ready", () => {
-			// Register Jarivs to the following events
-			Promise.all([this.ts.registerEvent("textprivate"), this.ts.whoami()])
-				.then(res => {
-					console.info(this.name, "Subscribed to Private Teamspeak Text Messages");
-					this.whoami = res[1];
-					this.ready = true;
-					this.ts.clientMove(this.whoami.client_id, this.cid).catch(e => {
-						console.error("CATCHED", e.message);
-					});
-					console.info(this.name, "Teamspeak connection is Ready");
-				})
-				.catch(e => {
-					console.error("CATCHED", e.message);
-				});
-		});
+				// Once Teamspeak 3 connection is established, connect to Steam
+				if (this.config.integrations.steamHelper.config) {
+					this.steam = new steamHelper(this.config.integrations.steamHelper.config, this.name, this.firebase.db, this.ts);
+				}
+			})
+			.catch(err => {
+				console.error("CATCHED", err.message);
+			});
 
 		this.ts.on("textmessage", data => {
 			// Stop the bot responding to its own replies, causing an infinite loop (0_o)
@@ -116,22 +101,52 @@ class Jarvis {
 	}
 
 	/**
+	 * Jarvis generic message handler
+	 * This function requires a callback-function which will be used when Jarvis recieves a message
+	 * @version 1.0
+	 * @memberof Jarvis
+	 * @param {function} callback - Callback-function
+	 */
+	messageHandler(callback) {
+		this.onMessage = callback;
+	}
+
+	/**
 	 * Connects Jarvis to a Slack Server
 	 * @version 1.0
 	 * @memberof Jarvis
 	 */
 	connectToSlack() {
-		this.slack = new slackBot(this.config.integrations.slackBot.config);
+		this.slack = new slackHelper(this.config.integrations.slackHelper.config);
 
 		this.slack.on("open", () => {
 			this.slackReady = true;
-			console.info(this.name, `Slack connection is Ready`);
+			console.info(`${this.name}:`, `Slack connection is Ready`);
 		});
 
 		this.slack.on("error", e => {
 			this.closeSlack();
 			console.error("Jarvis Slack Error:", e.message);
 		});
+	}
+
+	/**
+	 * Disconnects Jarvis from a Teamspeak 3 server
+	 * @version 1.1
+	 * @memberof Jarvis
+	 */
+	closeTS() {
+		this.enabled = false;
+		this.teamspeakReady = false;
+	}
+
+	/**
+	 * Disconnects Jarvis from slack
+	 * @version 1.1
+	 * @memberof Jarvis
+	 */
+	closeSlack() {
+		this.slackReady = false;
 	}
 
 	/**

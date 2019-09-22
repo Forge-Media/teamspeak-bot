@@ -20,6 +20,6 @@ exports.onMessage = function(msg, jarvis) {
 	const command = msg.toLowerCase();
 
 	if (command == "!cid") {
-		client.message("You are in channel ID: " + client.getPropertyByName("cid"));
+		client.message("You are in channel ID: " + client.cid);
 	}
 };

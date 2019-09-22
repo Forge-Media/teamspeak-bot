@@ -64,7 +64,7 @@ function creatingUser(client) {
 exports.onMessage = function(msg, jarvis) {
 	const message = msg.toLowerCase();
 	let client = jarvis.invoker;
-	let clid = client.getPropertyByName("clid");
+	let clid = client.clid;
 
 	// Is this client already creating channels
 	if (typeof currentlyCreating[clid] === "undefined") {
@@ -174,7 +174,7 @@ exports.onMessage = function(msg, jarvis) {
  * @returns {Promise.<String>}
  */
 async function constructChannels(jarvis) {
-	let cid = jarvis.invoker.getPropertyByName("clid");
+	let cid = jarvis.invoker.clid;
 	let result = "Channels created successfully, setting permissions...";
 
 	// loop through channel array
@@ -215,7 +215,7 @@ async function constructChannels(jarvis) {
  * @returns {Promise.<String>}
  */
 async function setChannelPermissions(jarvis) {
-	let cid = jarvis.invoker.getPropertyByName("clid");
+	let cid = jarvis.invoker.clid;
 	// Result assumes success
 	let result = "Permissions set successfully";
 	// loop through channel array
@@ -249,7 +249,7 @@ async function setChannelPermissions(jarvis) {
  */
 function constructGroup(jarvis, client, tag) {
 	let clan_tag = tag.toUpperCase();
-	let clid = client.getPropertyByName("clid");
+	let clid = client.clid;
 	jarvis.ts
 		.serverGroupCopy(config.ssgid, 0, 1, clan_tag)
 		.then(res => {
@@ -316,11 +316,11 @@ function sanitation(message) {
  * @param	{Function} jarvis - Middleware Function: Provides access to Jarvis functions.
  */
 function terminateSession(client, jarvis) {
-	let clid = client.getPropertyByName("clid");
+	let clid = client.clid;
 
 	// Create a log and send to Slack
 	let logMessage = [`*JARVIS BOT LOG:*`];
-	let nickname = client.getPropertyByName("client_nickname");
+	let nickname = client.nickname;
 
 	// Channel creation Log
 	if (currentlyCreating[clid].processid >= 2) {
@@ -351,7 +351,7 @@ function terminateSession(client, jarvis) {
  * @memberof Plugin-createClan
  * @param	{object} helpers - Generic helper object for error messages
  */
-exports.run = helpers => {
+exports.run = (helpers, jarvis) => {
 	async.forever(function(next) {
 		setTimeout(function() {
 			// Max user session time in millseconds (3min)
@@ -367,7 +367,7 @@ exports.run = helpers => {
 						// Notify the invoker
 						invoker.message(helpers.error_message.expired);
 						// Terminate the invoker's session
-						delete currentlyCreating[invoker.getPropertyByName("clid")];
+						delete currentlyCreating[invoker.clid];
 					}
 				}
 			}

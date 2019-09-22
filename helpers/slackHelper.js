@@ -1,4 +1,4 @@
-const Bot = require("slackbots");
+const slackBot = require("slackbots");
 
 /**
  * This is a thin wrapper around slackbots,
@@ -6,7 +6,7 @@ const Bot = require("slackbots");
  * @version 1.1
  * @property {object} params - Contains config settings for your slack bot API
  */
-class slackBot extends Bot {
+class slackHelper extends slackBot {
 	constructor(params) {
 		super(params);
 	}
@@ -21,4 +21,4 @@ class slackBot extends Bot {
 	}
 }
 
-module.exports = slackBot;
+module.exports = slackHelper;

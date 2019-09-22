@@ -13,8 +13,10 @@
  */
 
 const Jarvis = require("./jarvis");
-const config = require("./config");
+const config = require("./config/config");
 
+// Needs to be removed (as of TS3-NodeJS-Library v2.0)
+// Replace with "TeamSpeak.connect()"
 const jarvis = new Jarvis(config);
 
 console.info("Loading plugins...");
@@ -30,7 +32,7 @@ const generic_helpers = {
 };
 
 // Initialise plugins from all available, passing Generic Helper Functions
-plugins.startPlugins(generic_helpers);
+plugins.startPlugins(generic_helpers, jarvis);
 
 /**
  * Jarvis core-generic message handler
@@ -47,14 +49,15 @@ jarvis.messageHandler(function(data) {
 		String(data.msg),
 		new (function() {
 			this.ts = jarvis.ts;
+			this.db = jarvis.firebase.db;
+			this.steam = jarvis.steam;
 			this.invoker = data.invoker;
-			// Use getPropertyByName() instread of getCache
-			this.groups = data.invoker.getPropertyByName("client_servergroups");
+			this.groups = data.invoker.servergroups;
 			this.error_message = generic_helpers.error_message;
 			this.help_message = generic_helpers.help_message;
 			this.integrations = generic_helpers.integrations;
 			this.log_to_slack = message => {
-				const logsChannelID = config.integrations.slackBot.logsChannelID;
+				const logsChannelID = config.integrations.slackHelper.logsChannelID;
 				jarvis.logToSlack(logsChannelID, message);
 			};
 		})()

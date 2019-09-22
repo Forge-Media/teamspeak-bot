@@ -30,10 +30,10 @@ exports.init = config_plugins => {
 	return exports;
 };
 
-exports.startPlugins = helpers => {
+exports.startPlugins = (helpers, jarvis) => {
 	pluginsArray.forEach(item => {
 		if (typeof item.run == "function") {
-			item.run(helpers);
+			item.run(helpers, jarvis);
 		}
 	});
 };
