@@ -34,8 +34,9 @@ class steamHelper {
 		this.crypto = require("crypto");
 		this.fs = require("fs");
 		this.path = require("path");
-		this.sentryPath = this.path.join(__dirname, "../config/steamSentry");
-		this.serversPath = this.path.join(__dirname, "../config/steamServers.json");
+		this.sentryPath = this.path.resolve(__dirname, "../config/steamSentry");
+		this.serversPath = this.path.resolve(__dirname, "../config/steamServers.json");
+
 		this.init();
 	}
 
@@ -59,12 +60,18 @@ class steamHelper {
 		//Connect to Steam
 		this.bot.connect();
 
+		this.steamUser.on("updateMachineAuth", (response, callback) => {
+			this.onSteamMachineAuth(response, callback);
+		});
+		/*
 		// Occurs when steam provides an updated sentry file, callback used to accept sentry file
 		this.steamUser.on("updateMachineAuth", function(response, callback) {
 			console.log(`Steam Event: Received updated sentry file.`);
-			this.fs.writeFileSync("data/sentry", response.bytes);
+			console.log(`sentryPath: ${this.sentryPath}`);
+			console.log(response.bytes);
+			this.fs.writeFileSync(this.sentryPath, response.bytes);
 			callback({ sha_file: this.MakeSha(response.bytes) });
-		});
+		});*/
 
 		this.bot
 			.on("logOnResponse", response => {
@@ -135,8 +142,8 @@ class steamHelper {
 		// Check SteamLogin details exist
 		if (loginDetails.account_name && loginDetails.password) {
 			// Removes the auth-code item if empty
-			if (loginDetails.authCode === "" || loginDetails.authCode === null) {
-				delete loginDetails.authCode;
+			if (loginDetails.auth_code === "" || loginDetails.auth_code === null) {
+				delete loginDetails.auth_code;
 			}
 
 			// Checks for existing sentry file and if it exists updates and uses it
@@ -151,7 +158,7 @@ class steamHelper {
 			}
 
 			// Debugging
-			//console.log(loginDetails);
+			// console.log(loginDetails);
 
 			return loginDetails;
 		} else {
@@ -223,12 +230,32 @@ class steamHelper {
 	 * @param	{object} response - Data as an object passed from the even handler
 	 */
 	onSteamSentry(response) {
-		this.fs.writeFileSync(sentryPath, response, err => {
+		this.fs.writeFile(this.sentryPath, response, err => {
 			if (err) {
 				console.error(`${this.name}: Could not save steamSentry file!`);
 				console.error("ERROR:", err);
 			}
 			console.info(`${this.name}: Updated steamSentry file`);
+		});
+	}
+
+	/**
+	 * Method called when steam provides an updated sentry file,
+	 * callback used to accept sentry file
+	 * @version 1.0
+	 * @memberof steamHelper
+	 * @param	{object} response - Data as an object passed from the event handler
+	 * @param	{function} callback - Called to accept this sentry update
+	 */
+	onSteamMachineAuth(response, callback) {
+		console.log(`SteamUser Event: Received updated sentry file.`);
+		this.fs.writeFile(this.sentryPath, response.bytes, err => {
+			if (err) {
+				console.error(`${this.name}: Could not save steamSentry file!`);
+				console.error("ERROR:", err);
+			}
+			console.info(`${this.name}: Updated steamSentry file`);
+			callback({ sha_file: this.MakeSha(response.bytes) });
 		});
 	}
 
