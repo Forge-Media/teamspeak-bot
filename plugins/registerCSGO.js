@@ -19,12 +19,15 @@ exports.help = [
  * @version 1.0
  * @property {array} owners - The IDs of ServerGroups which can use this plugin
  * @property {array} rank_group_ids - The IDs of the ServerGroups which the bot will assign corresponing with the 18 CSGO ranks
+ * @property {array} bot_steam_profile - The steam profile URL of the bot, used for informing users to friend the bot
+ * @property {number} update_rank_interval - How often to automatically update ranks in millseconds (2 hours - 7200000ms)
  * @memberof Plugin-registerCSGO
  */
 const config = {
 	owners: [40],
 	rank_group_ids: [166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183],
-	bot_steam_profile: "https://steamcommunity.com/profiles/76561198308070847/"
+	bot_steam_profile: "https://steamcommunity.com/profiles/76561198308070847/",
+	update_rank_interval: 7200000
 };
 
 /**
@@ -197,7 +200,7 @@ exports.onMessage = function(msg, jarvis) {
  * @memberof Plugin-registerCSGO
  * @param	{Object} invoker - Teamspeak user who made request
  * @param	{Number} newCSGORank - Invoker's current CSGO rank (0 = Unranked)
- * @returns {Promise.<data>} - data contains the updated CSGO Server Group ID or 0 for deranked user
+ * @returns {Promise.<data>} - data contains the updated CSGO Server Group ID or 0 for unranked user
  */
 async function updateUsersTeamspeakGroups(invoker, newCSGORank) {
 	// Make sure existing rank is instantiated as an array, to avoid undefined when no existing server group is found!
@@ -260,7 +263,7 @@ async function updateUsersTeamspeakGroups(invoker, newCSGORank) {
  * @param	{object} jarvis - Middleware Function: Provides access to certain Jarvis functions.
  *
  */
-exports.run = jarvis => {
+exports.run = (helpers, jarvis) => {
 	async.forever(function(next) {
 		setTimeout(function() {
 			jarvis.steam
@@ -284,7 +287,7 @@ exports.run = jarvis => {
 						// TODO: Find way to process offline users
 						if (client) {
 							// Debugging
-							// console.log(client.nickname, "=>", doc.id, "=>", newCSGORank.data[1]);
+							console.log(client.nickname, "=>", doc.id, "=>", newCSGORank.data[1]);
 
 							// Update the user's Teamspeak Server Groups as necessary
 							updateUsersTeamspeakGroups(client, newCSGORank.data[0])
@@ -304,7 +307,7 @@ exports.run = jarvis => {
 					console.error(`CATCHED: ${err.message}`);
 				});
 			next();
-			// How often to update ranks in millseconds (2 hours - 7200000ms)
-		}, 7200000);
+			// How often to update ranks in ms
+		}, config.update_rank_interval);
 	});
 };
