@@ -36,7 +36,6 @@ class steamHelper {
 		this.path = require("path");
 		this.sentryPath = this.path.resolve(__dirname, "../config/steamSentry");
 		this.serversPath = this.path.resolve(__dirname, "../config/steamServers.json");
-
 		this.init();
 	}
 
@@ -74,19 +73,19 @@ class steamHelper {
 		});*/
 
 		this.bot
-			.on("logOnResponse", response => {
+			.on("logOnResponse", (response) => {
 				this.onSteamLogOn(response);
 			})
-			.on("sentry", sentry => {
+			.on("sentry", (sentry) => {
 				this.onSteamSentry(sentry);
 			})
-			.on("servers", servers => {
+			.on("servers", (servers) => {
 				this.onSteamServers(servers);
 			})
 			.on("connected", () => {
 				this.onSteamConnected(authenticationDetails);
 			})
-			.on("error", err => {
+			.on("error", (err) => {
 				this.ready = false;
 				console.error("CATCHED", err);
 				this.bot.connect();
@@ -217,7 +216,7 @@ class steamHelper {
 		/*
 		 * Not strictly necessary, I think ¯\_(ツ)_/¯
 		 */
-		this.CSGOCli.on("unhandled", message => {
+		this.CSGOCli.on("unhandled", (message) => {
 			console.error("Unhandled:", message);
 		});
 	}
@@ -230,7 +229,7 @@ class steamHelper {
 	 * @param	{object} response - Data as an object passed from the even handler
 	 */
 	onSteamSentry(response) {
-		this.fs.writeFile(this.sentryPath, response, err => {
+		this.fs.writeFile(this.sentryPath, response, (err) => {
 			if (err) {
 				console.error(`${this.name}: Could not save steamSentry file!`);
 				console.error("ERROR:", err);
@@ -249,7 +248,7 @@ class steamHelper {
 	 */
 	onSteamMachineAuth(response, callback) {
 		console.log(`SteamUser Event: Received updated sentry file.`);
-		this.fs.writeFile(this.sentryPath, response.bytes, err => {
+		this.fs.writeFile(this.sentryPath, response.bytes, (err) => {
 			if (err) {
 				console.error(`${this.name}: Could not save steamSentry file!`);
 				console.error("ERROR:", err);
@@ -267,7 +266,7 @@ class steamHelper {
 	 * @param	{object} response - Data as an object passed from the even handler
 	 */
 	onSteamServers(response) {
-		this.fs.writeFile(this.serversPath, JSON.stringify(response, null, 2), err => {
+		this.fs.writeFile(this.serversPath, JSON.stringify(response, null, 2), (err) => {
 			if (err) {
 				console.error(`${this.name}: Could not save steamServers.json`);
 				console.error("ERROR:", err);
@@ -310,7 +309,7 @@ class steamHelper {
 		if (relationshipStatus === this.Steam.EFriendRelationship.RequestRecipient) {
 			console.log(`${this.name}: New relationship event from ${steam64id}, (status=${relationshipStatus})`);
 
-			let getRankSgid = steamRank => {
+			let getRankSgid = (steamRank) => {
 				const rank_group_ids = [166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183];
 				return rank_group_ids[steamRank - 1];
 			};
@@ -322,7 +321,7 @@ class steamHelper {
 			 */
 
 			this.getRegisterdUser(steam64id)
-				.then(async data => {
+				.then(async (data) => {
 					if (data) {
 						// Obtain Teamspeak 3 user via their uid
 						const invoker = await this.jarvis.getClientByUID(data.ts_uid);
@@ -351,7 +350,7 @@ class steamHelper {
 						return invoker.addGroups(getRankSgid(rank.data[0]));
 					} else throw new Error(`User: ${steam64id}, does not exist in database!`);
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.error(`CATCHED: ${err}`);
 				});
 		}
@@ -371,20 +370,20 @@ class steamHelper {
 				this.CSGOCli.playerProfileRequest(this.CSGOCli.ToAccountID(steam64id));
 
 				// Event handler
-				this.CSGOCli.once("playerProfile", profile => {
+				this.CSGOCli.once("playerProfile", (profile) => {
 					const ranking = profile.account_profiles[0].ranking;
 
 					// Check profile exists and has a ranking
 					if (profile !== null && ranking !== null) {
 						const success = {
 							message: "Success",
-							data: [ranking.rank_id, this.CSGOCli.Rank.getString(ranking.rank_id)]
+							data: [ranking.rank_id, this.CSGOCli.Rank.getString(ranking.rank_id)],
 						};
 						resolve(success);
 					} else {
 						const error = {
 							message: `Failed to get user: ${steam64id} rank`,
-							data: null
+							data: null,
 						};
 						reject(error);
 					}
@@ -410,7 +409,7 @@ class steamHelper {
 			.collection("csgo-users")
 			.doc(steamid)
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				if (doc.exists) {
 					console.info(`${invoker.nickname} used steamID belonging to someone else`);
 					invoker.message(`Hi, [color=#0069ff][b]${invoker.nickname}[/b][/color] looks like that steamID belongs to someone else!`);
@@ -436,7 +435,7 @@ class steamHelper {
 			.collection("csgo-users")
 			.where("ts_uid", "==", ts_uid)
 			.get()
-			.then(snapshot => {
+			.then((snapshot) => {
 				if (snapshot.empty) {
 					return false;
 				} else {
@@ -460,7 +459,7 @@ class steamHelper {
 			.collection("csgo-users")
 			.doc(steamid)
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				if (doc.exists) {
 					console.log(`${this.name}: found ${doc.data().ts_nickname} in the database!`);
 					return doc.data();
@@ -484,7 +483,7 @@ class steamHelper {
 			.collection("csgo-users")
 			.where("ts_uid", "==", ts_uid)
 			.get()
-			.then(snapshot => {
+			.then((snapshot) => {
 				if (snapshot.empty) {
 					return null;
 				} else {
@@ -504,7 +503,7 @@ class steamHelper {
 		return this.db
 			.collection("csgo-users")
 			.get()
-			.then(snapshot => {
+			.then((snapshot) => {
 				if (snapshot.empty) {
 					// console.log("Database empty");
 					return;
@@ -512,7 +511,7 @@ class steamHelper {
 					return snapshot.docs;
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.log("Error getting documents", err);
 			});
 	}

@@ -9,6 +9,7 @@ This project was made possible by [TS3-NodeJS-Library](https://github.com/Multiv
 
 ## Included Plugin Commands
 
+- `!registerLOL <Summoner Name> <Region> <Queue Type>`|`!deregisterLOL`|`!statusLOL` - Registers a user's League ID to obtain their LoL Rank as a server group. Can check status and deregister.
 - `!registerCSGO <Steam64id>`|`!deregisterCSGO`|`!statusCSGO` - Registers a user's Steam ID to obtain their CSGO Rank as a server group. Can check status and deregister.
 - `!createClan` - A simplified CLI-style mass-channel creator for the creation of clan channels and an associative server group. Sets permissions and properties of each channel automatically.
 - `!joinMe <userName>` - Requests another user to join your channel, independent of a user's permissions. Client moved if they accept.

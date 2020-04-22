@@ -2,6 +2,7 @@ const { TeamSpeak } = require("ts3-nodejs-library");
 const slackHelper = require("./helpers/slackHelper");
 const firebaseHelper = require("./helpers/firebaseHelper");
 const steamHelper = require("./helpers/steamHelper");
+const riotHelper = require("./helpers/riotHelper");
 
 /**
  * This is a thin wrapper around ts3-nodejs-library and slackbots,
@@ -28,6 +29,7 @@ class Jarvis {
 		this.ts = null;
 		this.slack = null;
 		this.steam = null;
+		this.riot = null;
 		this.firebase = new firebaseHelper(config.settings.nickname);
 		this.whoami;
 		this.enabled = true;
@@ -36,7 +38,7 @@ class Jarvis {
 		this.cid = config.settings.channel;
 		this.name = config.settings.nickname;
 		this.config = config;
-		this.onMessage = function() {};
+		this.onMessage = function () {};
 		this.init();
 	}
 
@@ -57,7 +59,7 @@ class Jarvis {
 		}
 
 		Promise.all([this.ts.registerEvent("textprivate"), this.ts.whoami()])
-			.then(res => {
+			.then((res) => {
 				console.info(`${this.name}:`, "Subscribed to Private Teamspeak Text Messages");
 				this.whoami = res[1];
 				this.teamspeakReady = true;
@@ -70,16 +72,17 @@ class Jarvis {
 					this.connectToSlack();
 				}
 
-				// Once Teamspeak 3 connection is established, connect to Steam
+				// Once Teamspeak 3 connection is established, connect to Steam and Riot-API
 				if (this.config.integrations.steamHelper.config) {
 					this.steam = new steamHelper(this.config.integrations.steamHelper.config, this.name, this.firebase.db, this.ts);
+					this.riot = new riotHelper(this.config.integrations.riotHelper.config, this.name, this.firebase.db);
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error("CATCHED", err.message);
 			});
 
-		this.ts.on("textmessage", data => {
+		this.ts.on("textmessage", (data) => {
 			// Stop the bot responding to its own replies, causing an infinite loop (0_o)
 			if (this.enabled && this.whoami.client_unique_identifier != data.invoker.getPropertyByName("client_unique_identifier")) {
 				this.onMessage(data);
@@ -87,14 +90,14 @@ class Jarvis {
 		});
 
 		// Error event gets fired when an Error during connecting or an Error during Processing of an Event happens
-		this.ts.on("error", e => {
+		this.ts.on("error", (e) => {
 			this.closeTS();
 			console.error("Jarvis Error:", e.message);
 		});
 
 		// Close event gets fired when the Connection to the TeamSpeak Server has been closed
 		// The e variable is not always set
-		this.ts.on("close", e => {
+		this.ts.on("close", (e) => {
 			this.closeTS();
 			console.error("Jarvis Connection has been closed!", e);
 		});
@@ -124,7 +127,7 @@ class Jarvis {
 			console.info(`${this.name}:`, `Slack connection is Ready`);
 		});
 
-		this.slack.on("error", e => {
+		this.slack.on("error", (e) => {
 			this.closeSlack();
 			console.error("Jarvis Slack Error:", e.message);
 		});
@@ -162,7 +165,7 @@ class Jarvis {
 		if (this.slackReady) {
 			// Not sure if promises work correctly here:
 			// https://github.com/mishk0/slack-bot-api/issues/54
-			this.slack.postMessage(channelID, message).fail(error => {
+			this.slack.postMessage(channelID, message).fail((error) => {
 				console.error("Jarvis Error:", error.message);
 			});
 		}
