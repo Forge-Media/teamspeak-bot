@@ -27,7 +27,7 @@ const config = {
 	regionList: ["BR1", "EUN1", "EUW1", "JP1", "KR", "LA1", "LA2", "NA1", "OC1", "RU", "TR1"],
 	rank_group_ids: [204, 203, 202, 201, 200, 199, 198, 197, 196],
 	ranks: ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"],
-	update_rank_interval: 20000,
+	update_rank_interval: 7200000,
 };
 
 /**
