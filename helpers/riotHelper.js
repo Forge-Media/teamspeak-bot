@@ -32,7 +32,7 @@ class riotHelper {
 
 		// Check connection to Riot API
 		try {
-			let summoner = await this.getSummoner("mjtaMqZSF8v4caeFb7f53_fMnbTy3iq53e4TSrw-rp-J5w", "", "euw1");
+			let summoner = await this.getSummoner(null, "FugiTive Legacy", "euw1");
 			if (summoner.name) {
 				console.info(`${this.name}:`, "Riot-API connection is Ready");
 			}
@@ -40,15 +40,6 @@ class riotHelper {
 			console.error(e);
 			process.exit(1);
 		}
-
-		/* Debug
-		try {
-			let summoner = await this.getSummonerLeagues("ZnlpTbytD21veWXhwNmW8sK9rfzelicK36z8SBBGSew1kVg", "euw1");
-			console.log(summoner);
-		} catch (e) {
-			console.error(e);
-		}
-		*/
 	}
 
 	/**
